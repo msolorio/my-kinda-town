@@ -1,0 +1,22 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+/*******************************************************
+FORMS
+*******************************************************/
+.input {
+  display: block;
+}
+
+.button {
+  display: block;
+}
+
+/* initialize first view */
+.form2,.cityDescription, .qualityOfLifeData, .button-remove1   {
+  display: none;
+}
+
