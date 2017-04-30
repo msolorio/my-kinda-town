@@ -8,11 +8,11 @@
     city1: null,
     urbanArea1: null,
     urbanAreaDescription1: null,
-    urbanAreaQualityOfLifeData1: null,
+    qualityOfLifeData1: null,
     city2: null,
     urbanArea2: null,
     urbanAreaDescription2: null,
-    urbanAreaQualityOfLifeData2: null
+    qualityOfLifeData2: null
   };
 
   ///////////////////////////////////////////////////
@@ -42,14 +42,31 @@
   };
 
   function updateViewInState(state) {
-    //
+    var qualityOfLifeData1 = state.qualityOfLifeData1;
+    var qualityOfLifeData2 = state.qualityOfLifeData2;
+    switch(true) {
+      case (qualityOfLifeData1 === null && state.qualityOfLifeData2 === null):
+        state.currentView = 'noCity';
+        break;
+      case (qualityOfLifeData1 !== null && qualityOfLifeData2 === null):
+      case (qualityOfLifeData1 === null && qualityOfLifeData2 !== null):
+        state.currentView = 'oneCity';
+        break;
+      case (qualityOfLifeData1 !== null & qualityOfLifeData2 !== null):
+        state.currentview = 'twoCities';
+        break;
+      default:
+        state.currentView = null;
+        console.error('no matching view');
+        break;
+    }
   };
 
   function addUrbanAreaDataToState(state, formNum, urbanAreaData) {
     console.log('urbanAreaData:', urbanAreaData);
     state['urbanArea' + formNum] = urbanAreaData.full_name;
     state['urbanAreaDescription' + formNum] = urbanAreaData._embedded['ua:scores'].summary;
-    state['urbanAreaQualityOfLifeData' + formNum] = urbanAreaData._embedded['ua:scores'].categories;
+    state['qualityOfLifeData' + formNum] = urbanAreaData._embedded['ua:scores'].categories;
   };
 
   function addDataToState(state, data, formNum) {
@@ -83,7 +100,7 @@
 
     $.ajax(settings)
       .done(function(data){
-        console.log('data:', data);
+        // console.log('data:', data);
         addDataToState(state, data, formNum);
       })
       .fail(function(error) {
