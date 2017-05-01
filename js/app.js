@@ -5,72 +5,48 @@
   ///////////////////////////////////////////////////
   window.state = {
     currentView: 'noCity',
-    city1: null,
-    urbanArea1: null,
-    urbanAreaDescription1: null,
-    qualityOfLifeData1: null,
-    city2: null,
-    urbanArea2: null,
-    urbanAreaDescription2: null,
-    qualityOfLifeData2: null
+    message: null,
+    city: null,
+    urbanArea: null,
+    urbanAreaDescription: null,
+    qualityOfLifeData: null
   };
 
   ///////////////////////////////////////////////////
   // UPDATE STATE
   ///////////////////////////////////////////////////
 
-  function updateMessage() {
+  function updateMessage(state, message) {
     console.log('in updateMessage');
+    state.message = message;
   };
 
-  function clearInput(formNum) {
-    $('.js-input-' + formNum).val('');
+  function clearInput() {
+    $('.js-input').val('');
   };
 
-  function getCityInputVal(state, formNum, addInputToState) {
-    return (
-      $('.js-input-' + formNum)
-        .val()
-        .trim()
-        // .replace(/[^a-zA-Z-,\s]/g, '')
-        .toLowerCase()
-    );
+  function getCityInputVal(state, addInputToState) {
+    return $('.js-input').val().trim().toLowerCase();
+    // .replace(/[^a-zA-Z-,\s]/g, '')
   };
 
-  function addCityToState(state, formNum, cityFullName) {
-    state['city' + formNum] = cityFullName;
+  function addCityToState(state, cityFullName) {
+    state['city'] = cityFullName;
   };
 
   function updateViewInState(state) {
-    var qualityOfLifeData1 = state.qualityOfLifeData1;
-    var qualityOfLifeData2 = state.qualityOfLifeData2;
-    switch(true) {
-      case (qualityOfLifeData1 === null && state.qualityOfLifeData2 === null):
-        state.currentView = 'noCity';
-        break;
-      case (qualityOfLifeData1 !== null && qualityOfLifeData2 === null):
-      case (qualityOfLifeData1 === null && qualityOfLifeData2 !== null):
-        state.currentView = 'oneCity';
-        break;
-      case (qualityOfLifeData1 !== null & qualityOfLifeData2 !== null):
-        state.currentview = 'twoCities';
-        break;
-      default:
-        state.currentView = null;
-        console.error('no matching view');
-        break;
-    }
+    if (state.city === null) state.currentView = 'noCity';
+    else state.currentView = 'cityDisplay';
   };
 
-  function addUrbanAreaDataToState(state, formNum, urbanAreaData) {
+  function addUrbanAreaDataToState(state, urbanAreaData) {
     console.log('urbanAreaData:', urbanAreaData);
-    state['urbanArea' + formNum] = urbanAreaData.full_name;
-    state['urbanAreaDescription' + formNum] = urbanAreaData._embedded['ua:scores'].summary;
-    state['qualityOfLifeData' + formNum] = urbanAreaData._embedded['ua:scores'].categories;
+    state.urbanArea = urbanAreaData.full_name;
+    state.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
+    state.qualityOfLifeData = urbanAreaData._embedded['ua:scores'].categories;
   };
 
-  function addDataToState(state, data, formNum) {
-    // console.log('data:', data);
+  function updateDataInState(state, data) {
     var cityData = data._embedded['city:search-results'][0];
     var cityFullName = cityData.matching_full_name || null;
     
@@ -78,16 +54,15 @@
     try {
       var urbanAreaData = cityData._embedded['city:item']._embedded['city:urban_area'];
     } catch(error) {
-      updateMessage();
+      updateMessage('No data found for city.');
       return;
     }
 
-    addCityToState(state, formNum, cityFullName);
-    addUrbanAreaDataToState(state, formNum, urbanAreaData);
-    updateViewInState(state);
+    addCityToState(state, cityFullName);
+    addUrbanAreaDataToState(state, urbanAreaData);
   };
 
-  function getUrbanAreaData(state, formNum, cityInputVal) {
+  function getUrbanAreaData(state, cityInputVal) {
     var settings = {
       type: 'GET',
       url: 'https://api.teleport.org/api/cities/',
@@ -100,8 +75,9 @@
 
     $.ajax(settings)
       .done(function(data){
-        // console.log('data:', data);
-        addDataToState(state, data, formNum);
+        updateDataInState(state, data);
+        updateViewInState(state);
+        renderState(state);
       })
       .fail(function(error) {
         console.log('error:', error);
@@ -111,19 +87,56 @@
       });
   };
 
-  function updateState(state, formNum) {
-    var cityInputVal = getCityInputVal(state, formNum);
+  function updateState(state) {
+    var cityInputVal = getCityInputVal(state);
     if (cityInputVal) {
-      getUrbanAreaData(state, formNum, cityInputVal);
+      getUrbanAreaData(state, cityInputVal);
     } else {
-      updateMessage();
+      updateMessage(state, 'Please enter a city.');
+      renderState(state);
     }
   };
 
   ///////////////////////////////////////////////////
   // RENDER STATE
   ///////////////////////////////////////////////////
+  function renderQualityOfLifeData(state) {
+    var resultString = state.qualityOfLifeData.reduce(function(total, category) {
+      return (
+        total +
+        '<div class="category">' + category.name + '</div>\
+          <div class="ratingBar-outer">\
+            <div class="ratingBar-inner js-ratingBar-inner" data-percent="' + 
+            Math.round(category.score_out_of_10 * 100) / 100 + 
+            '">\
+          </div>\
+        </div>'  
+      );
+    }, '');
+    $('.js-qualityOfLifeData').html(resultString);
+  };
 
+  function renderView(state) {
+    console.log('in renderView');
+    if (state.currentView === 'noCity') {
+      $('.js-cityDescription').hide();
+      $('.js-qualityOfLifeData').hide();
+    } else if (state.currentView === 'cityDisplay') {
+      $('.js-cityDescription').show();
+      $('.js-qualityOfLifeData').show();
+    } else {
+      console.log('no view set');
+    }
+  };
+
+  function renderState(state) {
+    console.log('state', state);
+    $('.js-input').val(state.urbanArea);
+    $('.js-cityDescription').html(state.urbanAreaDescription);
+    renderQualityOfLifeData(state);
+
+    renderView(state);
+  };
 
   ///////////////////////////////////////////////////
   // EVENT LISTENERS
@@ -134,11 +147,16 @@
   function listenForAddCityButtonClick() {
     $('.js-button-addCity').click(function(event) {
       event.preventDefault();
-      
-      var formNum = $(event.target).attr('data-addCity-num');
-      updateState(state, formNum);
+
+      updateState(state);
     });
   };
+
+  // function listenForRemoveCityButtonClick() {
+  //   $('.js-button-remove').click(function(event) {
+  //     event.preventDefault();
+  //   });
+  // };
 
   ///////////////////////////////////////////////////
   // WINDOW LOAD

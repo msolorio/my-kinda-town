@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.hide {
+  display: none;
+}
+
 /*******************************************************
 FORMS
 *******************************************************/
@@ -16,6 +20,6 @@ FORMS
 }
 
 /* initialize first view */
-.form2,.cityDescription, .qualityOfLifeData, .button-remove1   {
+/*.form2,.cityDescription, .qualityOfLifeData, .button-remove1   {
   display: none;
-}
+}*/
