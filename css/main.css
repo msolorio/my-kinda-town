@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+.body {
+  font-family: arial, sans-serif;
+  color: #1f2023;
+}
+
 .hide {
   display: none;
 }
@@ -13,13 +18,58 @@ FORMS
 *******************************************************/
 .input {
   display: block;
+  height: 46px;
+  line-height: 46px;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 18px;
+  outline: none;
+  width: 100%;
+  border: none;
+  border-bottom: 3px solid #b7baca;
 }
 
 .button {
   display: block;
+  margin: 0 auto;
+  outline: none;
+  height: 34px;
+  width: 115px;
 }
 
-/* initialize first view */
-/*.form2,.cityDescription, .qualityOfLifeData, .button-remove1   {
-  display: none;
-}*/
+/*******************************************************
+QUALITY OF LIFE DATA DISPLAY
+*******************************************************/
+.qualityOfLifeData {
+  margin-bottom: 25px;
+}
+
+.category {
+  font-size: 0;
+  margin-bottom: 10px;
+}
+
+.categoryName {
+  font-size: 14px;
+}
+
+.ratingBar-outer {
+  display: inline-block;
+  width: calc(100% - 40px);
+  max-width: 430px;
+  height: 20px;
+  border: 2px solid #333;
+}
+
+.ratingBar-inner {
+  height: 100%;
+  border-right: 1px solid #dadada;
+  box-shadow: 2px 0px 6px 0px rgba(0, 0, 0, 0.1);
+}
+
+.ratingVal {
+  display: inline-block;
+  width: 40px;
+  padding-left: 10px;
+  font-size: 14px;
+}

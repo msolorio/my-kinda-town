@@ -54,7 +54,8 @@
     try {
       var urbanAreaData = cityData._embedded['city:item']._embedded['city:urban_area'];
     } catch(error) {
-      updateMessage('No data found for city.');
+      updateMessage(state, 'No data found for city.');
+      clearInput();
       return;
     }
 
@@ -75,6 +76,7 @@
 
     $.ajax(settings)
       .done(function(data){
+        console.log('data:', data);
         updateDataInState(state, data);
         updateViewInState(state);
         renderState(state);
@@ -100,16 +102,24 @@
   ///////////////////////////////////////////////////
   // RENDER STATE
   ///////////////////////////////////////////////////
+  function renderMessage(state) {
+    $('.js-message').html(state.message);
+  };
+
   function renderQualityOfLifeData(state) {
     var resultString = state.qualityOfLifeData.reduce(function(total, category) {
       return (
         total +
-        '<div class="category">' + category.name + '</div>\
-          <div class="ratingBar-outer">\
-            <div class="ratingBar-inner js-ratingBar-inner" data-percent="' + 
-            Math.round(category.score_out_of_10 * 100) / 100 + 
-            '">\
+        '<div class="category">\
+          <div class="categoryName">' + category.name + '</div>\
+            <div class="ratingBar-outer">\
+              <div class="ratingBar-inner js-ratingBar-inner" \
+              style="background-color:' + category.color + '; width:' + 
+              Math.round(category.score_out_of_10 * 10) +
+              '%;">\
+            </div>\
           </div>\
+          <span class="ratingVal">' + Math.round(category.score_out_of_10 * 100) / 100 + '</span>\
         </div>'  
       );
     }, '');
@@ -131,9 +141,12 @@
 
   function renderState(state) {
     console.log('state', state);
-    $('.js-input').val(state.urbanArea);
-    $('.js-cityDescription').html(state.urbanAreaDescription);
-    renderQualityOfLifeData(state);
+    renderMessage(state);
+    if (state.qualityOfLifeData) {
+      $('.js-input').val(state.urbanArea);
+      $('.js-cityDescription').html(state.urbanAreaDescription);
+      renderQualityOfLifeData(state);
+    }
 
     renderView(state);
   };
