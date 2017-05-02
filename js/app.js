@@ -99,11 +99,12 @@
         updateDataInState(state, data, cityInputVal, formNum);
         updateViewInState(state);
         renderState(state);
+        renderLayout(state);
       })
       // server encountered error processing request
       .fail(function(error) {
         console.log('error:', error);
-        updateMessage('There was an issue with the server.');
+        updateMessage(state, 'There was an issue with the server.');
       })
       .always(function() {
         console.log('request complete');
@@ -118,11 +119,14 @@
     } else {
       updateMessage(state, 'Please enter a city.');
       renderState(state);
+      renderLayout(state);
     }
   };
 
   function updateStateOnRemoveCity(state, formNum) {
     state.cities.splice(formNum, 1);
+    updateMessage(state, '');
+    updateViewInState(state);
   };
 
   ///////////////////////////////////////////////////
@@ -137,9 +141,15 @@
     if (state.currentView === 'noCity') {
       $('.js-cityDescription').hide();
       $('.js-qualityOfLifeData').hide();
-    } else if (state.currentView === 'cityDisplay') {
+      $('.js-form2').hide();
+    } else if (state.currentView === 'singleCity') {
       $('.js-cityDescription').show();
       $('.js-qualityOfLifeData').show();
+      $('.js-form2').show();
+    } else if (state.currentView === 'twoCities') {
+      $('.js-cityDescription').hide();
+      $('.js-qualityOfLifeData').show();
+      $('.js-form2').show();
     } else {
       console.log('no view set');
     }
@@ -174,7 +184,7 @@
         '</div>'
       );
     }
-    $('.js-cityDescription').html(resultString);
+    $('.js-qualityOfLifeData').html(resultString);
   };
 
   function renderUrbanAreaName(state) {
@@ -223,6 +233,7 @@
       var formNum = $(event.currentTarget).attr('data-remove');
       updateStateOnRemoveCity(state, formNum);
       renderState(state);
+      renderLayout(state);
     });
   };
 
@@ -230,6 +241,7 @@
   // WINDOW LOAD
   ///////////////////////////////////////////////////
   $(function() {
+    renderLayout(state);
     listenForAddCityButtonClick();
     listenForRemoveCityButtonClick();
   });
