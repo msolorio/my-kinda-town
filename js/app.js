@@ -14,8 +14,8 @@
     state.message = message;
   };
 
-  function clearInput() {
-    $('.js-input').val('');
+  function clearInput(formNum) {
+    $('[data-input=' + formNum + ']').val('');
   };
 
   function getCityInputVal(state, formNum) {
@@ -72,7 +72,7 @@
       var urbanAreaData = cityData._embedded['city:item']._embedded['city:urban_area'];
     } catch(error) {
       updateMessage(state, 'No data found for ' + makeCapitalCase(cityInputVal));
-      clearInput();
+      clearInput(formNum);
       return;
     }
 
@@ -110,7 +110,7 @@
       });
   };
 
-  function updateState(state, formNum) {
+  function updateStateOnAddCity(state, formNum) {
     var cityInputVal = getCityInputVal(state, formNum);
     console.log(cityInputVal);
     if (cityInputVal) {
@@ -119,6 +119,10 @@
       updateMessage(state, 'Please enter a city.');
       renderState(state);
     }
+  };
+
+  function updateStateOnRemoveCity(state, formNum) {
+    state.cities.splice(formNum, 1);
   };
 
   ///////////////////////////////////////////////////
@@ -141,34 +145,40 @@
     }
   };
 
-  // TODO: break up into smaller functions, possibly refactor loops if needed for speed
+  function renderRatingBars(state, categoryNum) {
+    return state.cities.reduce(function(total, city, index) {
+      var categoryData = city.qualityOfLifeData[categoryNum];
+      var score = Math.round(categoryData.score_out_of_10 * 100)/100;
+      return (
+        total +
+        '<div class="rating">\
+          <div class="ratingBar-outer">\
+            <div class="ratingBar-inner" data-cityNum="' + index + '"\
+            style="width: ' + score * 10 + '%">\
+            </div>\
+          </div>\
+          <div class="ratingVal">' + score + '</div>\
+        </div>'
+      )
+    }, '<div class="categoryData">') + '</div>';
+  };
+
   function renderQualityOfLifeData(state) {
     var resultString = '';
-    var numOfCategories = state.cities[0].qualityOfLifeData.length;
-    for (var i=0; i<numOfCategories; i++) {
-      resultString += '<div class="category">';
-      resultString += '<h3 class="categoryName">' + state.cities[0].qualityOfLifeData[i].name + '</h3>'
-      resultString += state.cities.reduce(function(total, city, index) {
-        var categoryData = city.qualityOfLifeData[i];
-        var score = Math.round(categoryData.score_out_of_10 * 100)/100;
-        return (
-          total +
-          '<div class="rating">\
-            <div class="ratingBar-outer">\
-              <div class="ratingBar-inner" data-cityNum="' + index + '"\
-              style="width: ' + score * 10 + '%">\
-              </div>\
-            </div>\
-            <div class="ratingVal">' + score + '</div>\
-          </div>'
-        )
-      }, '<div class="categoryData">') + '</div>';
-      resultString += '</div>';
+    var numOfCategories = state.cities[0] && state.cities[0].qualityOfLifeData.length;
+    for (var categoryIndex=0; categoryIndex<numOfCategories; categoryIndex++) {
+      resultString += (
+        '<div class="category">\
+          <h3 class="categoryName">' + state.cities[0].qualityOfLifeData[categoryIndex].name + '</h3>' +
+          renderRatingBars(state, categoryIndex) +
+        '</div>'
+      );
     }
     $('.js-cityDescription').html(resultString);
   };
 
   function renderUrbanAreaName(state) {
+    $('.js-input').val('');
     state.cities.forEach(function(city, index) {
       $('[data-input=' + index + ']').val(city.urbanAreaFirstName);
     });
@@ -203,23 +213,25 @@
       event.preventDefault();
       var formNum = $(event.currentTarget).attr('data-addCity');
       console.log(formNum);
-      updateState(state, formNum);
+      updateStateOnAddCity(state, formNum);
     });
   };
 
-  // function listenForRemoveCityButtonClick() {
-  //   $('.js-button-remove').click(function(event) {
-  //     event.preventDefault();
-  //   });
-  // };
+  function listenForRemoveCityButtonClick() {
+    $('.js-button-remove').click(function(event) {
+      event.preventDefault();
+      var formNum = $(event.currentTarget).attr('data-remove');
+      updateStateOnRemoveCity(state, formNum);
+      renderState(state);
+    });
+  };
 
   ///////////////////////////////////////////////////
   // WINDOW LOAD
   ///////////////////////////////////////////////////
   $(function() {
-
     listenForAddCityButtonClick();
-
+    listenForRemoveCityButtonClick();
   });
 
 }());
