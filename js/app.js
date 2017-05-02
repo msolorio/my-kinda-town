@@ -141,15 +141,20 @@
     if (state.currentView === 'noCity') {
       $('.js-cityDescription').hide();
       $('.js-qualityOfLifeData').hide();
-      $('.js-form2').hide();
+      $('.js-form0').removeClass('col-xs-6');
+      $('.js-form1').hide();
+      $('[data-remove=1]').show();
     } else if (state.currentView === 'singleCity') {
       $('.js-cityDescription').show();
       $('.js-qualityOfLifeData').show();
-      $('.js-form2').show();
+      $('.js-form0').addClass('col-xs-6');
+      $('.js-form1').show();
+      $('[data-remove=1]').hide();
     } else if (state.currentView === 'twoCities') {
       $('.js-cityDescription').hide();
       $('.js-qualityOfLifeData').show();
-      $('.js-form2').show();
+      $('.js-form1').show();
+      $('[data-remove=1]').show();
     } else {
       console.log('no view set');
     }
@@ -241,7 +246,7 @@
   // WINDOW LOAD
   ///////////////////////////////////////////////////
   $(function() {
-    renderLayout(state);
+    // renderLayout(state);
     listenForAddCityButtonClick();
     listenForRemoveCityButtonClick();
   });

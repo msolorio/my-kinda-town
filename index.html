@@ -15,12 +15,13 @@
 
     <!--change to form element-->
     <div class="forms row">
-      <form class="form js-form col-xs-6">
+      <form class="form js-form js-form0 col-xs-12">
         <input
           class="input js-input"
           type="text"
           placeholder="Enter a City"
           data-input=0>
+        <div class="inputUnderline inputUnderline0"></div>
         <button
           class="button button-addCity js-button-addCity"
           data-addCity=0>Show Ratings</button>
@@ -29,12 +30,13 @@
           data-remove=0>Remove</button>
       </form>
 
-      <form class="form js-form js-form2 col-xs-6">
+      <form class="form js-form js-form1 col-xs-6 hide">
         <input
           class="input js-input"
           type="text"
           placeholder="Enter a City"
           data-input=1>
+          <div class="inputUnderline inputUnderline1"></div>
         <button
           class="button button-addCity js-button-addCity"
           data-addCity=1>Show Ratings</button>
@@ -45,9 +47,9 @@
 
     </div>
 
-    <p class="cityDescription js-cityDescription"></p>
+    <p class="cityDescription js-cityDescription hide"></p>
 
-    <div class="qualityOfLifeData hide js-qualityOfLifeData">
+    <div class="qualityOfLifeData hide js-qualityOfLifeData hide">
     </div>
 
   </div>
