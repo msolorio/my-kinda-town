@@ -6,7 +6,7 @@
 
 .body {
   font-family: arial, sans-serif;
-  color: #1f2023;
+  color: #404248;
 }
 
 .hide {
@@ -20,21 +20,24 @@ FORMS
   display: block;
   height: 46px;
   line-height: 46px;
-  font-size: 25px;
+  font-size: 15px;
   text-align: center;
   margin-bottom: 18px;
   outline: none;
   width: 100%;
   border: none;
   border-bottom: 3px solid #b7baca;
+  color: #404248;
 }
 
 .button {
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 10px;
   outline: none;
   height: 34px;
   width: 115px;
+  border: 1px solid #b4b6bd;
+  background-color: #dbdfe4;
 }
 
 /*******************************************************

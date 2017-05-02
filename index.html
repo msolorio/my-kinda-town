@@ -13,24 +13,41 @@
   <div class="container">
     <div class="js-message"></div>
 
-    <div class="forms">
-      <div class="form js-form">
-        <input class="input js-input" type="text" placeholder="Enter a City">
-        <button class="button button-addCity js-button-addCity">Show Ratings</button>
-        <!--<button class="button button-remove js-button-remove">Remove</button>-->
-      </div>
+    <!--change to form element-->
+    <div class="forms row">
+      <form class="form js-form col-xs-6">
+        <input
+          class="input js-input"
+          type="text"
+          placeholder="Enter a City"
+          data-input=0>
+        <button
+          class="button button-addCity js-button-addCity"
+          data-addCity=0>Show Ratings</button>
+        <button
+          class="button button-remove js-button-remove"
+          data-remove=0>Remove</button>
+      </form>
 
-      <!--<div class="form form2 js-form2 col-xs-6">
-        <input class="input js-input-2" type="text" data-input-num="2">
-        <button class="button button-addCity2 js-button-addCity" data-addCity-num="2">Pick City</button>
-        <button class="button button-remove2 js-button-remove" data-remove-num="2">Remove</button>
-      </div>-->
+      <form class="form js-form col-xs-6">
+        <input
+          class="input js-input"
+          type="text"
+          placeholder="Enter a City"
+          data-input=1>
+        <button
+          class="button button-addCity js-button-addCity"
+          data-addCity=1>Show Ratings</button>
+        <button
+          class="button button-remove js-button-remove"
+          data-remove=1>Remove</button>
+      </form>
+
     </div>
 
-    <p class="cityDescription hide js-cityDescription">A city description. Some filler text. Technology-inspired technology gives us incremental improvements. Art-inspired technology gives us brand new ideas. As you cultivate the witness, things change. You don't have to change them. Things just change.</p>
+    <p class="cityDescription hide js-cityDescription"></p>
 
     <div class="qualityOfLifeData hide js-qualityOfLifeData">
-
     </div>
 
   </div>
