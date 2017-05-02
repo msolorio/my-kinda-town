@@ -70,6 +70,14 @@ QUALITY OF LIFE DATA DISPLAY
   box-shadow: 2px 0px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
+[data-cityNum="0"] {
+  background-color: #00bb00;
+}
+
+[data-cityNum="1"] {
+  background-color: #ecec36;
+}
+
 .ratingVal {
   display: inline-block;
   width: 40px;

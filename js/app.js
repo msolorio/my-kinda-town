@@ -1,17 +1,5 @@
 (function() {
 
-  ///////////////////////////////////////////////////
-  // STATE
-  ///////////////////////////////////////////////////
-  // window.state = {
-  //   currentView: 'noCity',
-  //   message: null,
-  //   city: null,
-  //   urbanArea: null,
-  //   urbanAreaDescription: null,
-  //   qualityOfLifeData: null
-  // };
-
   window.state = {
     currentView: 'noCity',
     message: null,
@@ -22,7 +10,6 @@
   ///////////////////////////////////////////////////
   // UPDATE STATE
   ///////////////////////////////////////////////////
-
   function updateMessage(state, message) {
     state.message = message;
   };
@@ -35,10 +22,6 @@
     return $('[data-input=' + formNum + ']').val().trim()
       .replace(/[@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '').toLowerCase();
   };
-
-  // function addCityToState(state, cityFullName) {
-  //   state.city = cityFullName;
-  // };
 
   function updateViewInState(state) {
     switch(true) {
@@ -55,8 +38,6 @@
         console.error('no view to show');
         break;
     }
-    // if (!state.cities.length) state.currentView = 'noCity';
-    // else state.currentView = 'cityDisplay';
   };
 
   function getCityFirstName(cityFullName) {
@@ -72,9 +53,6 @@
     cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
     cityObj.qualityOfLifeData = urbanAreaData._embedded['ua:scores'].categories;
     state.cities[formNum] = (cityObj);
-    // state.urbanArea = urbanAreaData.full_name;
-    // state.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
-    // state.qualityOfLifeData = urbanAreaData._embedded['ua:scores'].categories;
   };
 
   function makeCapitalCase(inputVal) {
@@ -98,7 +76,6 @@
       return;
     }
 
-    // addCityToState(state, cityFullName);
     addCityDataToState(state, cityFullName, urbanAreaData, formNum);
   };
 
@@ -151,26 +128,6 @@
     $('.js-message').html(state.message);
   };
 
-  // function renderQualityOfLifeData(state) {
-  //   var resultString = state.qualityOfLifeData.reduce(function(total, category) {
-  //     return (
-  //       total +
-  //       '<div class="category">\
-  //         <div class="categoryName">' + category.name + '</div>\
-  //           <div class="ratingBar-outer">\
-  //             <div class="ratingBar-inner js-ratingBar-inner" \
-  //             style="background-color:' + category.color + '; width:' + 
-  //             Math.round(category.score_out_of_10 * 10) +
-  //             '%;">\
-  //           </div>\
-  //         </div>\
-  //         <span class="ratingVal">' + Math.round(category.score_out_of_10 * 100) / 100 + '</span>\
-  //       </div>'  
-  //     );
-  //   }, '');
-  //   $('.js-qualityOfLifeData').html(resultString);
-  // };
-
   function renderLayout(state) {
     console.log('in renderLayout');
     if (state.currentView === 'noCity') {
@@ -184,24 +141,55 @@
     }
   };
 
+  // TODO: break up into smaller functions, possibly refactor loops if needed for speed
+  function renderQualityOfLifeData(state) {
+    var resultString = '';
+    var numOfCategories = state.cities[0].qualityOfLifeData.length;
+    for (var i=0; i<numOfCategories; i++) {
+      resultString += '<div class="category">';
+      resultString += '<h3 class="categoryName">' + state.cities[0].qualityOfLifeData[i].name + '</h3>'
+      resultString += state.cities.reduce(function(total, city, index) {
+        var categoryData = city.qualityOfLifeData[i];
+        var score = Math.round(categoryData.score_out_of_10 * 100)/100;
+        return (
+          total +
+          '<div class="rating">\
+            <div class="ratingBar-outer">\
+              <div class="ratingBar-inner" data-cityNum="' + index + '"\
+              style="width: ' + score * 10 + '%">\
+              </div>\
+            </div>\
+            <div class="ratingVal">' + score + '</div>\
+          </div>'
+        )
+      }, '<div class="categoryData">') + '</div>';
+      resultString += '</div>';
+    }
+    $('.js-cityDescription').html(resultString);
+  };
+
   function renderUrbanAreaName(state) {
     state.cities.forEach(function(city, index) {
       $('[data-input=' + index + ']').val(city.urbanAreaFirstName);
     });
   };
 
+  function renderDescription(state) {
+    if (state.currentView === 'singleCity') {
+      $('.js-cityDescription').html(state.cities[0].urbanAreaDescription);
+    } else {
+      $('.js-cityDescription').html('');
+    }
+  };
+
   function renderState(state) {
     console.log('state', state);
     renderMessage(state);
     renderUrbanAreaName(state);
-    $('.js-cityDescription').html(state.cities[0].urbanAreaDescription);
-    // if (state.qualityOfLifeData) {
-    //   $('.js-input').val(state.urbanArea);
-    //   $('.js-cityDescription').html(state.urbanAreaDescription);
-    //   renderQualityOfLifeData(state);
-    // }
+    renderDescription(state);
+    renderQualityOfLifeData(state);
 
-    renderLayout(state);
+    // renderLayout(state);
   };
 
   ///////////////////////////////////////////////////
