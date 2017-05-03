@@ -21,6 +21,10 @@
 /*******************************************************
 FORMS
 *******************************************************/
+.forms {
+  margin-bottom: 25px;
+}
+
 .input {
   display: block;
   height: 35px;
@@ -62,6 +66,21 @@ FORMS
 .button:active {
   border: 1px solid #b6b7b9;
   background-color: #d2d3d6;
+}
+/*******************************************************
+DESCRIPTION
+*******************************************************/
+.descriptionButton {
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+[data-description-button="0"] {
+  border-bottom: 5px solid #05cc05;
+}
+
+[data-description-button="1"] {
+  border-bottom: 5px solid #ecec36;
 }
 
 /*******************************************************
@@ -117,7 +136,7 @@ QUALITY OF LIFE DATA DISPLAY
   padding-left: 10px;
   font-size: 16px;
   position: relative;
-  top: -6px;
+  top: -8px;
 }
 
 @media (min-width:576px) {

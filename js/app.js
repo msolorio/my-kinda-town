@@ -45,7 +45,6 @@
   };
 
   function addCityDataToState(state, cityFullName, urbanAreaData, formNum) {
-    console.log('urbanAreaData:', urbanAreaData);
     var cityObj = {};
     cityObj.cityName = cityFullName;
     cityObj.urbanAreaFullName = urbanAreaData.full_name;
@@ -90,6 +89,8 @@
       }
     };
 
+    $('.js-message').html('Retrieving data');
+
     $.ajax(settings)
       // will succeed even if invalid search term
       // data will include an empty array of possible cities
@@ -107,13 +108,12 @@
         updateMessage(state, 'There was an issue with the server.');
       })
       .always(function() {
-        console.log('request complete');
+        //
       });
   };
 
   function updateStateOnAddCity(state, formNum) {
     var cityInputVal = getCityInputVal(state, formNum);
-    console.log(cityInputVal);
     if (cityInputVal) {
       getCityData(state, cityInputVal, formNum);
     } else {
@@ -137,21 +137,22 @@
   };
 
   function renderLayout(state) {
-    console.log('in renderLayout');
     if (state.currentView === 'noCity') {
-      $('.js-cityDescription').hide();
+      $('[data-description-container=0]').hide();
       $('.js-qualityOfLifeData').hide();
       $('.js-form0').removeClass('col-xs-6');
       $('.js-form1').hide();
       $('[data-remove=1]').show();
     } else if (state.currentView === 'singleCity') {
-      $('.js-cityDescription').show();
+      $('[data-description-container=0]').show();
+      $('[data-description-container=1]').hide();
       $('.js-qualityOfLifeData').show();
       $('.js-form0').addClass('col-xs-6');
       $('.js-form1').show();
       $('[data-remove=1]').hide();
     } else if (state.currentView === 'twoCities') {
-      $('.js-cityDescription').hide();
+      $('[data-description-container=0]').show();
+      $('[data-description-container=1]').show();
       $('.js-qualityOfLifeData').show();
       $('.js-form1').show();
       $('[data-remove=1]').show();
@@ -200,11 +201,13 @@
   };
 
   function renderDescription(state) {
-    if (state.currentView === 'singleCity') {
-      $('.js-cityDescription').html(state.cities[0].urbanAreaDescription);
-    } else {
-      $('.js-cityDescription').html('');
-    }
+    state.cities.forEach(function(city, index) {
+      if (city.urbanAreaDescription) {
+        $('[data-description=' + index + ']').html(city.urbanAreaDescription);
+        $('[data-cityName=' + index + ']').html(city.urbanAreaFirstName);
+      }
+      else $('[data-description=' + index + ']').html('');
+    });
   };
 
   function renderState(state) {
@@ -213,8 +216,6 @@
     renderUrbanAreaName(state);
     renderDescription(state);
     renderQualityOfLifeData(state);
-
-    // renderLayout(state);
   };
 
   ///////////////////////////////////////////////////
@@ -227,7 +228,6 @@
     $('.js-button-addCity').click(function(event) {
       event.preventDefault();
       var formNum = $(event.currentTarget).attr('data-addCity');
-      console.log(formNum);
       updateStateOnAddCity(state, formNum);
     });
   };
@@ -242,13 +242,20 @@
     });
   };
 
+  function listenForDescriptionClick() {
+    $('.descriptionButton').click(function(event) {
+      var descriptionNum = $(event.currentTarget).attr('data-description-button');
+      $('[data-description=' + descriptionNum + ']').toggle();
+    })
+  };
+
   ///////////////////////////////////////////////////
   // WINDOW LOAD
   ///////////////////////////////////////////////////
   $(function() {
-    // renderLayout(state);
     listenForAddCityButtonClick();
     listenForRemoveCityButtonClick();
+    listenForDescriptionClick();
   });
 
 }());
