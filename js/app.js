@@ -1,6 +1,6 @@
 (function() {
 
-  window.state = {
+  state = {
     currentView: 'noCity',
     message: null,
     cities: [
@@ -10,6 +10,9 @@
   ///////////////////////////////////////////////////
   // UPDATE STATE
   ///////////////////////////////////////////////////
+
+  // comment each function
+
   function updateMessage(state, message) {
     state.message = message;
   };
@@ -19,8 +22,11 @@
   };
 
   function getCityInputVal(state, formNum) {
-    return $('[data-input=' + formNum + ']').val().trim()
-      .replace(/[@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '').toLowerCase();
+    return $('[data-input=' + formNum + ']')
+      .val()
+      .trim()
+      .replace(/[@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '')
+      .toLowerCase();
   };
 
   function updateViewInState(state) {
@@ -51,7 +57,7 @@
     cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
     cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
     cityObj.qualityOfLifeData = urbanAreaData._embedded['ua:scores'].categories;
-    state.cities[formNum] = (cityObj);
+    state.cities[formNum] = cityObj;
   };
 
   function makeCapitalCase(inputVal) {
@@ -136,6 +142,7 @@
     $('.js-message').html(state.message);
   };
 
+  // change to switch statement
   function renderLayout(state) {
     if (state.currentView === 'noCity') {
       $('[data-description-container=0]').hide();
@@ -179,6 +186,7 @@
     }, '<div class="categoryData">') + '</div>';
   };
 
+  // leave comment
   function renderQualityOfLifeData(state) {
     var resultString = '';
     var numOfCategories = state.cities[0] && state.cities[0].qualityOfLifeData.length;
@@ -203,8 +211,10 @@
   function renderDescription(state) {
     state.cities.forEach(function(city, index) {
       if (city.urbanAreaDescription) {
-        $('[data-description=' + index + ']').html(city.urbanAreaDescription);
-        $('[data-cityName=' + index + ']').html(city.urbanAreaFirstName);
+        $('[data-description=' + index + ']')
+          .html(city.urbanAreaDescription);
+        $('[data-cityName=' + index + ']')
+          .html(city.urbanAreaFirstName);
       }
       else $('[data-description=' + index + ']').html('');
     });
@@ -245,7 +255,8 @@
   function listenForDescriptionClick() {
     $('.descriptionButton').click(function(event) {
       var descriptionNum = $(event.currentTarget).attr('data-description-button');
-      $('[data-description=' + descriptionNum + ']').toggle();
+      $('[data-description=' + descriptionNum + ']').toggle(200);
+      $('.js-toggleTriangle' + descriptionNum).toggleClass('toggleTriangle-down');
     })
   };
 
