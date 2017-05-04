@@ -7,6 +7,8 @@
     ]
   };
 
+
+
   ///////////////////////////////////////////////////
   // UPDATE STATE
   ///////////////////////////////////////////////////
@@ -146,23 +148,24 @@
   function renderLayout(state) {
     if (state.currentView === 'noCity') {
       $('[data-description-container=0]').hide();
-      $('.js-qualityOfLifeData').hide();
+      $('.js-qualityOfLifeContainer').hide();
       $('.js-form0').removeClass('col-xs-6');
       $('.js-form1').hide();
-      $('[data-remove=1]').show();
+      $('[data-remove=0]').hide();
     } else if (state.currentView === 'singleCity') {
-      $('[data-description-container=0]').show();
+      $('[data-description-container=0]').css('display', 'block');
       $('[data-description-container=1]').hide();
-      $('.js-qualityOfLifeData').show();
+      $('.js-qualityOfLifeContainer').css('display', 'block');
       $('.js-form0').addClass('col-xs-6');
-      $('.js-form1').show();
+      $('.js-form1').css('display', 'block');
+      $('[data-remove=0]').css('display', 'block');
       $('[data-remove=1]').hide();
     } else if (state.currentView === 'twoCities') {
-      $('[data-description-container=0]').show();
-      $('[data-description-container=1]').show();
-      $('.js-qualityOfLifeData').show();
-      $('.js-form1').show();
-      $('[data-remove=1]').show();
+      $('[data-description-container=0]').css('display', 'block');
+      $('[data-description-container=1]').css('display', 'block');
+      $('.js-qualityOfLifeContainer').css('display', 'block');
+      $('.js-form1').css('display', 'block');
+      $('[data-remove=1]').css('display', 'block');
     } else {
       console.log('no view set');
     }
@@ -171,7 +174,7 @@
   function renderRatingBars(state, categoryNum) {
     return state.cities.reduce(function(total, city, index) {
       var categoryData = city.qualityOfLifeData[categoryNum];
-      var score = Math.round(categoryData.score_out_of_10 * 100)/100;
+      var score = Math.round(categoryData.score_out_of_10);
       return (
         total +
         '<div class="rating">\
@@ -180,7 +183,7 @@
             style="width: ' + score * 10 + '%">\
             </div>\
           </div>\
-          <div class="ratingVal">' + score + '</div>\
+          <div class="ratingVal">' + score + '/10</div>\
         </div>'
       )
     }, '<div class="categoryData">') + '</div>';
@@ -192,8 +195,8 @@
     var numOfCategories = state.cities[0] && state.cities[0].qualityOfLifeData.length;
     for (var categoryIndex=0; categoryIndex<numOfCategories; categoryIndex++) {
       resultString += (
-        '<div class="category">\
-          <h3 class="categoryName">' + state.cities[0].qualityOfLifeData[categoryIndex].name + '</h3>' +
+        '<div class="category col-xs-12 col-sm-6">\
+          <h4 class="categoryName">' + state.cities[0].qualityOfLifeData[categoryIndex].name + '</h4>' +
           renderRatingBars(state, categoryIndex) +
         '</div>'
       );
@@ -255,10 +258,17 @@
   function listenForDescriptionClick() {
     $('.descriptionButton').click(function(event) {
       var descriptionNum = $(event.currentTarget).attr('data-description-button');
-      $('[data-description=' + descriptionNum + ']').toggle(200);
-      $('.js-toggleTriangle' + descriptionNum).toggleClass('toggleTriangle-down');
+      $('[data-description=' + descriptionNum + ']').toggle(150);
+      $('.js-toggleTriangle-description' + descriptionNum).toggleClass('toggleTriangle-down');
     })
   };
+
+  function listenForCityRatingsClick() {
+    $('.js-qualityOfLifeHeadlineContainer').click(function(event) {
+      $('.js-qualityOfLifeHeadlineDesc').toggle(150);
+      $('.js-toggleTriangle-qualityOfLifeHeadline').toggleClass('toggleTriangle-down');
+    });
+  }
 
   ///////////////////////////////////////////////////
   // WINDOW LOAD
@@ -267,6 +277,7 @@
     listenForAddCityButtonClick();
     listenForRemoveCityButtonClick();
     listenForDescriptionClick();
+    listenForCityRatingsClick();
   });
 
 }());

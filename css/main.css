@@ -10,12 +10,14 @@
   color: #4f5158;
 }
 
-.hide {
-  display: none;
-}
-
 .js-message {
   height: 18px;
+}
+
+.mainHeadline {
+  margin: 0 0 5px;
+  text-align: center;
+  font-size: 18px;
 }
 
 /*******************************************************
@@ -67,14 +69,24 @@ FORMS
   border: 1px solid #b6b7b9;
   background-color: #d2d3d6;
 }
+
+
 /*******************************************************
 DESCRIPTION
 *******************************************************/
+.descriptionContainer {
+  margin-bottom: 15px;
+}
+
 .descriptionButton {
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   cursor: pointer;
   font-size: 18px;
   height: 31px;
+}
+
+.cityDescription p {
+  margin: 0;
 }
 
 [data-description-button="0"] {
@@ -89,9 +101,10 @@ DESCRIPTION
   display: inline-block;
   transform: rotate(0deg);
   position: relative;
-  transition: all .2s ease;
+  transition: all .15s ease;
   font-size: 21px;
   left: -5px;
+  top: 1px;
 }
 
 .toggleTriangle-down {
@@ -107,15 +120,30 @@ QUALITY OF LIFE DATA DISPLAY
   margin-bottom: 25px;
 }
 
-.category {
+.qualityOfLifeContainer {
   margin: 0 auto 10px;
-  max-width: 477px;
+  /*max-width: 477px;*/
+}
+
+.qualityOfLifeHeadlineContainer {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.qualityOfLifeHeadline {
+  display: inline-block;
+  margin: 0 0 6px;
+}
+
+.category {
+  margin-bottom: 16px;
   font-size: 0;
 }
 
 .categoryName {
-  margin-bottom: 8px;
+  margin: 0 0 9px;
   font-size: 18px;
+  font-weight: 400;
 }
 
 .rating {
@@ -124,8 +152,8 @@ QUALITY OF LIFE DATA DISPLAY
 
 .ratingBar-outer {
   display: inline-block;
-  width: calc(100% - 40px);
-  max-width: 430px;
+  width: calc(100% - 45px);
+  /*max-width: 430px;*/
   height: 27px;
   box-shadow: inset 0px 0px 2px rgba(14, 0, 0, 0.77);
   border-radius: 15px;
@@ -149,13 +177,23 @@ QUALITY OF LIFE DATA DISPLAY
 
 .ratingVal {
   display: inline-block;
-  width: 40px;
+  width: 45px;
   padding-left: 10px;
   font-size: 16px;
   position: relative;
   top: -8px;
 }
 
+/***********************************************
+UTILITY CLASSES
+/***********************************************/
+.hide {
+  display: none;
+}
+
+/***********************************************
+MEDIA QUERIES
+/***********************************************/
 @media (min-width:576px) {
   .input {
     font-size: 23px;
@@ -172,12 +210,12 @@ QUALITY OF LIFE DATA DISPLAY
 
 @media (min-width: 992px) {
   .container {
-    width: 750px;
+    /*width: 750px;*/
   }
 }
 
 @media (min-width: 1200px) {
   .container {
-    width: 750px;
+    width: 970px;
   }
 }
