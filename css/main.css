@@ -10,12 +10,20 @@
   color: #4f5158;
 }
 
-.hide {
-  display: none;
+.message {
+  position: absolute;
+  width: 100%;
+  height: 27px;
+  margin-bottom: 10px;
+  background: #ffecec;
+  border-bottom: 1px solid #ff9999;
+  padding: 4px 0 4px 11px;
 }
 
-.js-message {
-  height: 18px;
+.mainHeadline {
+  margin: 37px 0 5px;
+  text-align: center;
+  font-size: 18px;
 }
 
 /*******************************************************
@@ -67,6 +75,8 @@ FORMS
   border: 1px solid #b6b7b9;
   background-color: #d2d3d6;
 }
+
+
 /*******************************************************
 DESCRIPTION
 *******************************************************/
@@ -180,6 +190,16 @@ QUALITY OF LIFE DATA DISPLAY
   top: -8px;
 }
 
+/***********************************************
+UTILITY CLASSES
+/***********************************************/
+.hide {
+  display: none;
+}
+
+/***********************************************
+MEDIA QUERIES
+/***********************************************/
 @media (min-width:576px) {
   .input {
     font-size: 23px;
@@ -196,12 +216,12 @@ QUALITY OF LIFE DATA DISPLAY
 
 @media (min-width: 992px) {
   .container {
-    width: 750px;
+    /*width: 750px;*/
   }
 }
 
 @media (min-width: 1200px) {
   .container {
-    width: 750px;
+    width: 970px;
   }
 }

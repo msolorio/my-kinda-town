@@ -10,10 +10,11 @@
   <title>My Kinda Town</title>
 </head>
 <body class="body">
-  <div class="container">
-    <div class="js-message"></div>
+  <div class="message js-message hide"></div>
 
-    <!--change to form element-->
+  <div class="container">
+
+    <h1 class="mainHeadline">Compare Cities Around The World</h1>
     <div class="forms row">
       <form class="form js-form js-form0 col-xs-12">
         <input
@@ -26,7 +27,7 @@
           class="button button-addCity js-button-addCity"
           data-addCity=0>Show Ratings</button>
         <button
-          class="button button-remove js-button-remove"
+          class="button button-remove js-button-remove hide"
           data-remove=0>Remove</button>
       </form>
 
@@ -90,11 +91,11 @@
           &nbsp;&#9656
         </span>
         <div class="qualityOfLifeHeadlineDesc js-qualityOfLifeHeadlineDesc hide">
-          See how your cities perform in a number of categories on a scale from 1 to 10.
+          See how your cities perform in a number of categories on a scale from 0 to 10 with higher numbers being more desirable.
         </div>
       </div>
 
-      <div class="qualityOfLifeData js-qualityOfLifeData">
+      <div class="qualityOfLifeData js-qualityOfLifeData row clearfix">
       </div>
     </div>
 
