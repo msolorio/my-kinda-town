@@ -7,14 +7,9 @@
     ]
   };
 
-
-
   ///////////////////////////////////////////////////
   // UPDATE STATE
   ///////////////////////////////////////////////////
-
-  // comment each function
-
   function updateMessage(state, message) {
     state.message = message;
   };
@@ -23,14 +18,20 @@
     $('[data-input=' + formNum + ']').val('');
   };
 
+  /**
+   * removes special characters and leaves accented and all letter characters
+   * */
   function getCityInputVal(state, formNum) {
     return $('[data-input=' + formNum + ']')
       .val()
       .trim()
-      .replace(/[@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '')
+      .replace(/[0-9@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '')
       .toLowerCase();
   };
 
+  /**
+   * updates state.currentView based on length of cities array
+   * */
   function updateViewInState(state) {
     switch(true) {
       case (state.cities.length === 0):
@@ -48,17 +49,70 @@
     }
   };
 
+  /** returns only the name of the city and removes the state or country
+   * returned from the API
+   */
   function getCityFirstName(cityFullName) {
     return cityFullName.split(', ')[0];
   };
 
+  /**
+   * quality of life categories from API we don't want to to display
+   * */
+  var unneededCategories = [
+    'Business Freedom',
+    'Taxation',
+    'Venture Capital',
+    'Cost of Living',
+    'Tolerance'
+  ];
+
+  /** takes categories array from API and converts it to object so
+   * it is easier to work with
+   */
+  function convertToObj(categoriesArray) {
+    var categoriesObj = {};
+    for (var i=0, j=categoriesArray.length; i<j; i++) {
+      var category = categoriesArray[i];
+      if (unneededCategories.indexOf(category.name) < 0) {
+        categoriesObj[category.name] = category;
+      }
+    }
+    return categoriesObj;
+  }
+
+  /**
+   * categories from the api that we want to rename
+   * */
+  var categoriesToRename = {
+    'Commute': 'Short Commute to Work',
+    'Economy': 'Healthy Economy',
+    'Housing': 'Affordable Housing',
+    'Startups': 'Thriving Startup Scene'
+  };
+
+  /**
+   * replaces original category names with desired names from categoriesToRename array
+   * */
+  function renameCategories(categoriesObj, categoriesToRename) {
+    for (category in categoriesToRename) {
+      categoriesObj[category].name = categoriesToRename[category];
+    }
+    return categoriesObj;
+  };
+
+  /** 
+   * build a city object and input as an item in the cities array
+  */
   function addCityDataToState(state, cityFullName, urbanAreaData, formNum) {
     var cityObj = {};
     cityObj.cityName = cityFullName;
     cityObj.urbanAreaFullName = urbanAreaData.full_name;
     cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
     cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
-    cityObj.qualityOfLifeData = urbanAreaData._embedded['ua:scores'].categories;
+    categoriesArray = urbanAreaData._embedded['ua:scores'].categories;
+    categoriesObj = convertToObj(categoriesArray);
+    cityObj.categoriesObj = renameCategories(categoriesObj, categoriesToRename);
     state.cities[formNum] = cityObj;
   };
 
@@ -83,6 +137,7 @@
       return;
     }
 
+    // if urban area found add city data to state
     addCityDataToState(state, cityFullName, urbanAreaData, formNum);
   };
 
@@ -97,7 +152,8 @@
       }
     };
 
-    $('.js-message').html('Retrieving data');
+    updateMessage(state, 'Retrieving data');
+    renderMessage(state);
 
     $.ajax(settings)
       // will succeed even if invalid search term
@@ -107,7 +163,7 @@
         updateMessage(state, '');
         updateDataInState(state, data, cityInputVal, formNum);
         updateViewInState(state);
-        renderState(state);
+        renderState(state, formNum);
         renderLayout(state);
       })
       // server encountered error processing request
@@ -120,13 +176,16 @@
       });
   };
 
+  /**
+   * if value inputted make HTTP request to get city data
+   */
   function updateStateOnAddCity(state, formNum) {
     var cityInputVal = getCityInputVal(state, formNum);
     if (cityInputVal) {
       getCityData(state, cityInputVal, formNum);
     } else {
       updateMessage(state, 'Please enter a city.');
-      renderState(state);
+      renderState(state, formNum);
       renderLayout(state);
     }
   };
@@ -141,66 +200,90 @@
   // RENDER STATE
   ///////////////////////////////////////////////////
   function renderMessage(state) {
+    if (state.message) $('.js-message').css('display', 'block');  
+    else $('.js-message').hide();
     $('.js-message').html(state.message);
   };
 
-  // change to switch statement
+  /**
+   * Hides and shows the larger sections
+   * jQuery css() method used instead of show() to avoid setting display: inline-block
+   */
   function renderLayout(state) {
-    if (state.currentView === 'noCity') {
-      $('[data-description-container=0]').hide();
-      $('.js-qualityOfLifeContainer').hide();
-      $('.js-form0').removeClass('col-xs-6');
-      $('.js-form1').hide();
-      $('[data-remove=0]').hide();
-    } else if (state.currentView === 'singleCity') {
-      $('[data-description-container=0]').css('display', 'block');
-      $('[data-description-container=1]').hide();
-      $('.js-qualityOfLifeContainer').css('display', 'block');
-      $('.js-form0').addClass('col-xs-6');
-      $('.js-form1').css('display', 'block');
-      $('[data-remove=0]').css('display', 'block');
-      $('[data-remove=1]').hide();
-    } else if (state.currentView === 'twoCities') {
-      $('[data-description-container=0]').css('display', 'block');
-      $('[data-description-container=1]').css('display', 'block');
-      $('.js-qualityOfLifeContainer').css('display', 'block');
-      $('.js-form1').css('display', 'block');
-      $('[data-remove=1]').css('display', 'block');
-    } else {
-      console.log('no view set');
+    switch(true) {
+      case (state.currentView === 'noCity'):
+        $('[data-description-container=0]').hide();
+        $('.js-qualityOfLifeContainer').hide();
+        $('.js-form0').removeClass('col-xs-6');
+        $('.js-form1').hide();
+        $('[data-remove=0]').hide();
+        break;
+      case (state.currentView === 'singleCity'):
+        $('[data-description-container=0]').css('display', 'block');
+        $('[data-description-container=1]').hide();
+        $('.js-qualityOfLifeContainer').css('display', 'block');
+        $('.js-form0').addClass('col-xs-6');
+        $('.js-form1').css('display', 'block');
+        $('[data-remove=0]').css('display', 'block');
+        $('[data-remove=1]').hide();
+        break;
+      case (state.currentView === 'twoCities'):
+        $('[data-description-container=0]').css('display', 'block');
+        $('[data-description-container=1]').css('display', 'block');
+        $('.js-qualityOfLifeContainer').css('display', 'block');
+        $('.js-form1').css('display', 'block');
+        $('[data-remove=1]').css('display', 'block');
+        break;
+      default:
+        console.log('no view set');
+        break;
     }
   };
 
-  function renderRatingBars(state, categoryNum) {
-    return state.cities.reduce(function(total, city, index) {
-      var categoryData = city.qualityOfLifeData[categoryNum];
-      var score = Math.round(categoryData.score_out_of_10);
-      return (
-        total +
-        '<div class="rating">\
-          <div class="ratingBar-outer">\
-            <div class="ratingBar-inner" data-cityNum="' + index + '"\
-            style="width: ' + score * 10 + '%">\
-            </div>\
-          </div>\
-          <div class="ratingVal">' + score + '/10</div>\
-        </div>'
-      )
-    }, '<div class="categoryData">') + '</div>';
-  };
-
-  // leave comment
-  function renderQualityOfLifeData(state) {
+  /**
+   * renders the ratings bars for each category by looping over
+   * the cities array and using the score to determine the width of the colored bars
+   * */
+  function renderRatingBars(state, category) {
     var resultString = '';
-    var numOfCategories = state.cities[0] && state.cities[0].qualityOfLifeData.length;
-    for (var categoryIndex=0; categoryIndex<numOfCategories; categoryIndex++) {
+    var cities = state.cities;
+    for (var i=0, j=cities.length; i<j; i++) {
+      var categoryData = cities[i].categoriesObj[category];
+      console.log('categoryData:', categoryData);
+      var score = categoryData.score_out_of_10;
       resultString += (
-        '<div class="category col-xs-12 col-sm-6">\
-          <h4 class="categoryName">' + state.cities[0].qualityOfLifeData[categoryIndex].name + '</h4>' +
-          renderRatingBars(state, categoryIndex) +
-        '</div>'
+        '<div class="categoryData">\
+          <div class="rating">\
+            <div class="ratingBar-outer">\
+              <div class="ratingBar-inner" data-cityNum="' + i + '"\
+              style="width: ' + score * 10 + '%">\
+              </div>\
+            </div>\
+            <div class="ratingVal">' + Math.round(score) + '/10</div>\
+          </div>\
+        </div>'
       );
     }
+    return resultString;
+  };
+
+  /**
+   * renders the categories section by looping over the
+   * categoriesObj
+   * */
+  function renderCategories(state) {
+    var resultString = '';
+    var categoriesObj = state.cities[0] && state.cities[0].categoriesObj;
+      for (category in categoriesObj) {
+        if (categoriesObj.hasOwnProperty(category)) {
+          resultString += (
+            '<div class="category col-xs-12 col-sm-6">\
+              <h4 class="categoryName">' + categoriesObj[category].name + '</h4>' +
+              renderRatingBars(state, category) +
+            '</div>'  
+          );
+        }
+      }
     $('.js-qualityOfLifeData').html(resultString);
   };
 
@@ -211,32 +294,32 @@
     });
   };
 
+
   function renderDescription(state) {
     state.cities.forEach(function(city, index) {
       if (city.urbanAreaDescription) {
-        $('[data-description=' + index + ']')
-          .html(city.urbanAreaDescription);
-        $('[data-cityName=' + index + ']')
-          .html(city.urbanAreaFirstName);
+        $('[data-description=' + index + ']').html(city.urbanAreaDescription);
+        $('[data-cityName=' + index + ']').html(city.urbanAreaFirstName);
       }
       else $('[data-description=' + index + ']').html('');
     });
   };
 
-  function renderState(state) {
+  function renderState(state, formNum) {
     console.log('state', state);
-    renderMessage(state);
     renderUrbanAreaName(state);
     renderDescription(state);
-    renderQualityOfLifeData(state);
+    renderCategories(state, formNum);
+    renderMessage(state);
   };
 
   ///////////////////////////////////////////////////
   // EVENT LISTENERS
   ///////////////////////////////////////////////////
-
-  // all buttons exist on page load
-  // don't need to worry about event delegation
+  /**
+   * all buttons exist on page load
+   * don't need to worry about event delegation
+   */
   function listenForAddCityButtonClick() {
     $('.js-button-addCity').click(function(event) {
       event.preventDefault();
@@ -250,7 +333,7 @@
       event.preventDefault();
       var formNum = $(event.currentTarget).attr('data-remove');
       updateStateOnRemoveCity(state, formNum);
-      renderState(state);
+      renderState(state, formNum);
       renderLayout(state);
     });
   };

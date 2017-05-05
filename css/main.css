@@ -10,12 +10,18 @@
   color: #4f5158;
 }
 
-.js-message {
-  height: 18px;
+.message {
+  position: absolute;
+  width: 100%;
+  height: 27px;
+  margin-bottom: 10px;
+  background: #ffecec;
+  border-bottom: 1px solid #ff9999;
+  padding: 4px 0 4px 11px;
 }
 
 .mainHeadline {
-  margin: 0 0 5px;
+  margin: 37px 0 5px;
   text-align: center;
   font-size: 18px;
 }
