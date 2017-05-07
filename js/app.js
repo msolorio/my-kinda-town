@@ -101,18 +101,56 @@
     return categoriesObj;
   };
 
+  // objects map to category names from api
+  // if name property specified for category replace name
+  // if none specified use original name from api
+  var categoriesConfiguration = {
+    'Housing': {
+      name: 'Affordable Housing',
+      position: 0,
+      dropdownOpen: true
+    },
+    'Cost of Living': {
+      position: 1,
+      dropdownOpen: true
+    },
+    'Travel Connectivity': {
+      position: 2,
+      dropdownOpen: true
+    }
+  };
+
+  function processCategoriesData(categoriesApiArray, categoriesConfiguration) {
+    console.log('categoriesArray:', categoriesApiArray);
+    var processedCategoriesArray = [];
+    categoriesApiArray.forEach(function(categoryFromApi) {
+      // if category from api included in configuration
+      if (categoriesConfiguration.hasOwnProperty(categoryFromApi.name)) {
+        var categoryToKeep = $.extend(true, {}, categoriesConfiguration[categoryFromApi.name]);
+        // add score to configuration
+        categoryToKeep.score = Math.round(categoryFromApi.score_out_of_10 * 100)/100;
+        // use name specified in configuration, if none exists use name from api
+        categoryToKeep.name = categoryToKeep.name || categoryFromApi.name;
+        // inserts category at correct position
+        processedCategoriesArray[categoryToKeep.position] = categoryToKeep;
+      }
+    });
+    console.log('processedCategoriesArray:', processedCategoriesArray);
+    return processedCategoriesArray;
+  }
+
   /** 
    * build a city object and input as an item in the cities array
   */
   function addCityDataToState(state, cityFullName, urbanAreaData, formNum) {
+    console.log('formNum', formNum)
     var cityObj = {};
     cityObj.cityName = cityFullName;
     cityObj.urbanAreaFullName = urbanAreaData.full_name;
     cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
     cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
     categoriesArray = urbanAreaData._embedded['ua:scores'].categories;
-    categoriesObj = convertToObj(categoriesArray);
-    cityObj.categoriesObj = renameCategories(categoriesObj, categoriesToRename);
+    cityObj.categoriesArray = processCategoriesData(categoriesArray, categoriesConfiguration);
     state.cities[formNum] = cityObj;
   };
 
@@ -244,13 +282,13 @@
    * renders the ratings bars for each category by looping over
    * the cities array and using the score to determine the width of the colored bars
    * */
-  function renderRatingBars(state, category) {
+  function renderRatingBars(state, categoryIndex) {
+    // console.log('in renderRatingBars', categoryIndex);
     var resultString = '';
     var cities = state.cities;
     for (var i=0, j=cities.length; i<j; i++) {
-      var categoryData = cities[i].categoriesObj[category];
-      console.log('categoryData:', categoryData);
-      var score = categoryData.score_out_of_10;
+      var categoryData = cities[i].categoriesArray[categoryIndex];
+      var score = categoryData.score;
       resultString += (
         '<div class="categoryData">\
           <div class="rating">\
@@ -273,16 +311,14 @@
    * */
   function renderCategories(state) {
     var resultString = '';
-    var categoriesObj = state.cities[0] && state.cities[0].categoriesObj;
-      for (category in categoriesObj) {
-        if (categoriesObj.hasOwnProperty(category)) {
-          resultString += (
-            '<div class="category col-xs-12 col-sm-6">\
-              <h4 class="categoryName">' + categoriesObj[category].name + '</h4>' +
-              renderRatingBars(state, category) +
-            '</div>'  
-          );
-        }
+    var categoriesArray = state.cities[0] && state.cities[0].categoriesArray;
+      for (var categoryIndex=0, j=categoriesArray.length; categoryIndex<j; categoryIndex++) {
+        resultString += (
+          '<div class="category col-xs-12 col-sm-6">\
+            <h4 class="categoryName">' + categoriesArray[categoryIndex].name + '</h4>' +
+            renderRatingBars(state, categoryIndex) +
+          '</div>'  
+        );
       }
     $('.js-qualityOfLifeData').html(resultString);
   };
