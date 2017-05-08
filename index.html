@@ -14,7 +14,7 @@
 
   <div class="container">
 
-    <h1 class="mainHeadline">Compare Cities Around The World</h1>
+    <h1 class="mainHeadline js-mainHeadline">Compare Cities Around The World</h1>
     <div class="forms row">
       <form class="form js-form js-form0 col-xs-12">
         <input
@@ -23,12 +23,18 @@
           placeholder="Enter a City"
           data-input=0>
         <div class="inputUnderline inputUnderline0"></div>
-        <button
-          class="button button-addCity js-button-addCity"
-          data-addCity=0>Show Ratings</button>
-        <button
-          class="button button-remove js-button-remove hide"
-          data-remove=0>Remove</button>
+        <div class="row">
+          <div class="button-addCityCol0 col-xs-12">
+            <button
+              class="button button-addCity js-button-addCity"
+              data-addCity=0>Show Ratings</button>
+          </div>
+          <div class="col-md-6">
+            <button
+              class="button button-remove js-button-remove hide"
+              data-remove=0>Remove</button>
+          </div>
+        </div>
       </form>
 
       <form class="form js-form js-form1 col-xs-6 hide">
@@ -38,12 +44,18 @@
           placeholder="Enter a City"
           data-input=1>
           <div class="inputUnderline inputUnderline1"></div>
-        <button
-          class="button button-addCity js-button-addCity"
-          data-addCity=1>Show Ratings</button>
-        <button
-          class="button button-remove js-button-remove"
-          data-remove=1>Remove</button>
+          <div class="row">
+            <div class="button-addCityCol1 col-md-6">
+              <button
+                class="button button-addCity js-button-addCity"
+                data-addCity=1>Show Ratings</button>
+            </div>
+            <div class="col-md-6">
+              <button
+                class="button button-remove js-button-remove"
+                data-remove=1>Remove</button>
+            </div>
+          </div>
       </form>
 
     </div>

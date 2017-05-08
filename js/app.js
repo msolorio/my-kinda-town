@@ -57,76 +57,101 @@
   };
 
   /**
-   * quality of life categories from API we don't want to to display
+   * object keys map to category names from api 
    * */
-  var unneededCategories = [
-    'Business Freedom',
-    'Taxation',
-    'Venture Capital',
-    'Cost of Living',
-    'Tolerance'
-  ];
-
-  /** takes categories array from API and converts it to object so
-   * it is easier to work with
-   */
-  function convertToObj(categoriesArray) {
-    var categoriesObj = {};
-    for (var i=0, j=categoriesArray.length; i<j; i++) {
-      var category = categoriesArray[i];
-      if (unneededCategories.indexOf(category.name) < 0) {
-        categoriesObj[category.name] = category;
-      }
-    }
-    return categoriesObj;
-  }
-
-  /**
-   * categories from the api that we want to rename
-   * */
-  var categoriesToRename = {
-    'Commute': 'Short Commute to Work',
-    'Economy': 'Healthy Economy',
-    'Housing': 'Affordable Housing',
-    'Startups': 'Thriving Startup Scene'
-  };
-
-  /**
-   * replaces original category names with desired names from categoriesToRename array
-   * */
-  function renameCategories(categoriesObj, categoriesToRename) {
-    for (category in categoriesToRename) {
-      categoriesObj[category].name = categoriesToRename[category];
-    }
-    return categoriesObj;
-  };
-
-  // objects map to category names from api
-  // if name property specified for category replace name
-  // if none specified use original name from api
   var categoriesConfiguration = {
     'Housing': {
       name: 'Affordable Housing',
+      display: true,
       position: 0,
       dropdownOpen: true
     },
     'Cost of Living': {
+      display: true,
       position: 1,
       dropdownOpen: true
     },
     'Travel Connectivity': {
+      display: true,
       position: 2,
       dropdownOpen: true
-    }
+    },
+    'Commute': {
+      name: 'Short Commute Time',
+      display: true,
+      position: 3,
+      dropdownOpen: true
+    },
+    'Healthcare': {
+      display: true,
+      position: 4,
+      dropdownOpen: true
+    },
+    'Education': {
+      display: true,
+      position: 5,
+      dropdownOpen: true
+    },
+    'Environmental Quality': {
+      display: true,
+      position: 6,
+      dropdownOpen: true
+    },
+    'Internet Access': {
+      display: true,
+      position: 7,
+      dropdownOpen: true
+    },
+    'Leisure & Culture': {
+      display: true,
+      position: 8,
+      dropdownOpen: true
+    },
+    'Outdoors': {
+      display: true,
+      position: 9,
+      dropdownOpen: true
+    },
+    'Economy': {
+      display: false,
+      position: 10,
+      dropdownOpen: true
+    },
+    'Taxation': {
+      display: false,
+      position: 11,
+      dropdownOpen: true
+    },
+    'Business Freedom': {
+      display: false,
+      position: 12,
+      dropdownOpen: true
+    },
+    'Startups': {
+      display: false,
+      position: 13,
+      dropdownOpen: true
+    },
+    'Venture Capital': {
+      display: false,
+      position: 14,
+      dropdownOpen: true
+    },
+    'Tolerance': {
+      display: false,
+      position: 15,
+      dropdownOpen: true
+    },
   };
 
   function processCategoriesData(categoriesApiArray, categoriesConfiguration) {
-    console.log('categoriesArray:', categoriesApiArray);
+    console.log('categoriesApiArray:', categoriesApiArray);
     var processedCategoriesArray = [];
     categoriesApiArray.forEach(function(categoryFromApi) {
       // if category from api included in configuration
-      if (categoriesConfiguration.hasOwnProperty(categoryFromApi.name)) {
-        var categoryToKeep = $.extend(true, {}, categoriesConfiguration[categoryFromApi.name]);
+      var categoryInConfig = categoriesConfiguration[categoryFromApi.name];
+      if (categoriesConfiguration.hasOwnProperty(categoryFromApi.name) && categoryInConfig.display) {
+        var categoryToKeep = $.extend(true, {}, categoryInConfig);
         // add score to configuration
         categoryToKeep.score = Math.round(categoryFromApi.score_out_of_10 * 100)/100;
         // use name specified in configuration, if none exists use name from api
@@ -250,6 +275,8 @@
   function renderLayout(state) {
     switch(true) {
       case (state.currentView === 'noCity'):
+        // $('.js-mainHeadline').show();
+        $('.button-addCityCol0').removeClass('col-md-6');
         $('[data-description-container=0]').hide();
         $('.js-qualityOfLifeContainer').hide();
         $('.js-form0').removeClass('col-xs-6');
@@ -257,6 +284,9 @@
         $('[data-remove=0]').hide();
         break;
       case (state.currentView === 'singleCity'):
+        // $('.js-mainHeadline').hide();
+        $('.button-addCityCol0').addClass('col-md-6');
+        $('.button-addCityCol1').removeClass('col-md-6');
         $('[data-description-container=0]').css('display', 'block');
         $('[data-description-container=1]').hide();
         $('.js-qualityOfLifeContainer').css('display', 'block');
@@ -266,6 +296,8 @@
         $('[data-remove=1]').hide();
         break;
       case (state.currentView === 'twoCities'):
+        // $('.js-mainHeadline').hide();
+        $('.button-addCityCol1').addClass('col-md-6');
         $('[data-description-container=0]').css('display', 'block');
         $('[data-description-container=1]').css('display', 'block');
         $('.js-qualityOfLifeContainer').css('display', 'block');
@@ -283,17 +315,13 @@
    * the cities array and using the score to determine the width of the colored bars
    * */
   function renderRatingBars(state, categoryIndex) {
-    // console.log('in renderRatingBars', categoryIndex);
-    var resultString = '';
-    var cities = state.cities;
-    for (var i=0, j=cities.length; i<j; i++) {
-      var categoryData = cities[i].categoriesArray[categoryIndex];
-      var score = categoryData.score;
-      resultString += (
+    return state.cities.reduce(function(resultString, city, index) {
+      var score = city.categoriesArray[categoryIndex].score;
+      return resultString += (
         '<div class="categoryData">\
           <div class="rating">\
             <div class="ratingBar-outer">\
-              <div class="ratingBar-inner" data-cityNum="' + i + '"\
+              <div class="ratingBar-inner" data-cityNum="' + index + '"\
               style="width: ' + score * 10 + '%">\
               </div>\
             </div>\
@@ -301,25 +329,27 @@
           </div>\
         </div>'
       );
-    }
-    return resultString;
+    }, '');
   };
 
   /**
    * renders the categories section by looping over the
-   * categoriesObj
+   * categoriesArray
    * */
   function renderCategories(state) {
-    var resultString = '';
     var categoriesArray = state.cities[0] && state.cities[0].categoriesArray;
-      for (var categoryIndex=0, j=categoriesArray.length; categoryIndex<j; categoryIndex++) {
-        resultString += (
+
+    // if categoriesArray contains is not undefined, render categories
+    var resultString = categoriesArray &&
+      categoriesArray.reduce(function(resultString, category, index) {
+        return resultString += (
           '<div class="category col-xs-12 col-sm-6">\
-            <h4 class="categoryName">' + categoriesArray[categoryIndex].name + '</h4>' +
-            renderRatingBars(state, categoryIndex) +
-          '</div>'  
+            <h4 class="categoryName">' + category.name + '</h4>' +
+            renderRatingBars(state, index) +
+          '</div>'
         );
-      }
+      }, '');
+
     $('.js-qualityOfLifeData').html(resultString);
   };
 
