@@ -150,7 +150,7 @@
     categoriesApiArray.forEach(function(categoryFromApi) {
       // if category from api included in configuration
       var categoryInConfig = categoriesConfiguration[categoryFromApi.name];
-      if (categoriesConfiguration.hasOwnProperty(categoryFromApi.name) && categoryInConfig.display) {
+      if (categoryInConfig && categoryInConfig.display) {
         var categoryToKeep = $.extend(true, {}, categoryInConfig);
         // add score to configuration
         categoryToKeep.score = Math.round(categoryFromApi.score_out_of_10 * 100)/100;
