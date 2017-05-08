@@ -60,34 +60,34 @@
    * object keys map to category names from api 
    * */
   var categoriesConfiguration = {
-    'Housing': {
-      name: 'Affordable Housing',
+    'Leisure & Culture': {
       display: true,
       position: 0,
       dropdownOpen: true
     },
-    'Cost of Living': {
+    'Education': {
       display: true,
       position: 1,
       dropdownOpen: true
     },
-    'Travel Connectivity': {
+    'Housing': {
+      name: 'Affordable Housing',
       display: true,
       position: 2,
       dropdownOpen: true
     },
-    'Commute': {
-      name: 'Short Commute Time',
+    'Healthcare': {
       display: true,
       position: 3,
       dropdownOpen: true
     },
-    'Healthcare': {
+    'Cost of Living': {
+      name: 'Low Cost of Living',
       display: true,
       position: 4,
       dropdownOpen: true
     },
-    'Education': {
+    'Outdoors': {
       display: true,
       position: 5,
       dropdownOpen: true
@@ -102,14 +102,20 @@
       position: 7,
       dropdownOpen: true
     },
-    'Leisure & Culture': {
+    'Safety': {
       display: true,
       position: 8,
       dropdownOpen: true
     },
-    'Outdoors': {
+    'Commute': {
+      name: 'Short Commute Time',
       display: true,
       position: 9,
+      dropdownOpen: true
+    },
+    'Travel Connectivity': {
+      display: false,
+      position: 10,
       dropdownOpen: true
     },
     'Economy': {
