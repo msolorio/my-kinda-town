@@ -1,31 +1,68 @@
+html {
+  height: 100%;
+}
+
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
 
-.body {
-  margin: 27px 0 0;
-  min-width: 320px;
-  font-family: arial, sans-serif;
+.bgImage {
   color: #4f5158;
+}
+
+.body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  min-width: 320px;
+  background-color: rgb(255, 251, 242);
+}
+
+.body,
+.input,
+.button {
+  color: #2f3033;
+  font-family: 'Nunito', arial, sans-serif;
+}
+
+.body:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(../img/map-and-compass.jpg) 77% 0 no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  opacity: 0.12;
+  z-index: -1;
+}
+
+.container {
+  padding-top: 27px;
 }
 
 .message {
   position: absolute;
   top: 0;
   width: 100%;
-  height: 20px;
-  font-size: 14px;
+  height: 22px;
+  font-size: 16px;
   background: #ffecec;
-  border-bottom: 1px solid #ff9999;
+  border-bottom: 1px solid #e0b27d;
   padding: 2px 0 0 11px;
   box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.15);
 }
 
 .mainHeadline {
+  font-weight: 300;
+  letter-spacing: .5px;
   margin: 0 auto 8px;
-  width: 274px;
+  width: 266px;
   text-align: center;
   font-size: 21px;
 }
@@ -62,8 +99,8 @@ FORMS
   outline: none;
   width: 100%;
   border: none;
-  color: #4f5158;
   background: none;
+  font-weight: 600;
 }
 
 .inputUnderline {
@@ -86,8 +123,9 @@ FORMS
   margin: 0px auto 8px;
   outline: none;
   cursor: pointer;
-  border: 1px solid #d2d3d6;
-  background-color: #dadbe0;
+  border: 1px solid rgb(179, 179, 179);
+  /*background-color: #dadbe0;*/
+  background-color: #e0deda;
   border-radius: 20px;
   font-size: 14px;
   color: #4a4d54;
@@ -113,9 +151,14 @@ DESCRIPTION
   margin-bottom: 15px;
 }
 
+.descriptionButton,
+.cityDescription {
+  font-size: 18px;
+  line-height: 26px;
+}
+
 .descriptionButton {
   cursor: pointer;
-  font-size: 18px;
   height: 31px;
 }
 
@@ -147,7 +190,7 @@ DESCRIPTION
 
 .toggleTriangle-down {
   transform: rotate(90deg);
-  left: -1px;
+  left: 0px;
   top: -1px;
 }
 
@@ -167,24 +210,29 @@ QUALITY OF LIFE DATA DISPLAY
   cursor: pointer;
 }
 
+.qualityOfLifeHeadline,
+.qualityOfLifeHeadlineDesc {
+  font-size: 18px;
+  line-height: 26px;
+}
+
 .qualityOfLifeHeadline {
   display: inline-block;
   margin: 0 0 6px;
-}
-
-.qualityOfLifeHeadlineDesc {
-  font-size: 18px;
+  font-weight: 600;
 }
 
 .category {
-  margin-bottom: 16px;
+  margin-bottom: 5px;
   font-size: 0;
 }
 
 .categoryName {
-  margin: 0 0 9px;
+  margin: 0 0 5px;
   font-size: 18px;
   font-weight: 400;
+  line-height: 29px;
+  letter-spacing: 0.05px;
 }
 
 .rating {
@@ -196,12 +244,14 @@ QUALITY OF LIFE DATA DISPLAY
   width: calc(100% - 45px);
   height: 27px;
   -webkit-box-shadow: inset 0px 0px 10px 1px rgba(14, 0, 0, 0.26),
-                      0px 1px 2px 0px rgba(0, 0, 0, 0.16);
+                      0px 1px 2px 0px rgba(0, 0, 0, 0.16),
+                      0px 2px 4px 0px rgba(0, 0, 0, .15);
   box-shadow: inset 0px 0px 10px 1px rgba(14, 0, 0, 0.26),
-              0px 1px 2px 0px rgba(0, 0, 0, 0.16);
+              0px 1px 2px 0px rgba(0, 0, 0, 0.16),
+              0px 2px 4px 0px rgba(0, 0, 0, .15);
   border-radius: 15px;
   overflow: hidden;
-  background: #f5f5f7;
+  background: rgba(255, 251, 242, 0.32);
 }
 
 .ratingBar-inner {
@@ -237,7 +287,7 @@ FOOTER
 }
 
 .footerLink, .footerLink:visited {
-  color: #2ebfef;
+  color: #2699bf;
 }
 
 /***********************************************
@@ -273,7 +323,7 @@ UTILITY CLASSES
 /***********************************************
 MEDIA QUERIES
 /***********************************************/
-@media (min-width:373px) {
+@media (min-width:426px) {
   .mainHeadline {
     width: auto;
   }
@@ -282,10 +332,13 @@ MEDIA QUERIES
 @media (min-width:576px) {
   .input {
     font-size: 23px;
+    letter-spacing: 0.5px;
   }
   .button {
     height: 50px;
     max-width: 242px;
+    margin-bottom: 18px;
+    font-size: 16px;
     -webkit-box-shadow: inset -1px -3px 8px 0px rgba(0, 0, 0, 0.22),
                         inset 1px 3px 8px 0px #ffffff,
                         0px 1px 2px 0px rgba(0, 0, 0, 0.16);
@@ -293,18 +346,70 @@ MEDIA QUERIES
                 inset 1px 3px 8px 0px #ffffff,
                 0px 1px 2px 0px rgba(0, 0, 0, 0.16);
   }
+  .inputUnderline {
+    margin-bottom: 25px;
+  }
+
+  .categoryName {
+    font-size: 19px;
+    margin-bottom: 9px;
+  }
+
+  .descriptions {
+    margin-bottom: 15px;
+  }
+
+  .descriptionButton,
+  .cityDescription {
+    font-size: 20px;
+    line-height: 29px;
+    letter-spacing: 0.05px;
+  }
+
+  .qualityOfLifeHeadline,
+  .qualityOfLifeHeadlineDesc {
+    line-height: 29px;
+    letter-spacing: 0.5px;
+  }
+
+  .qualityOfLifeHeadline {
+    font-size: 23px;
+  }
+
+  .qualityOfLifeHeadlineDesc {
+    font-size: 20px;
+  }
+
+  .category {
+    margin-bottom: 16px;
+  }
 }
 
 @media (min-width: 768px) {
   .mainHeadline {
     margin: 0 0 15px;
   }
+  .forms {
+    margin-bottom: 15px;
+  }
+  .inputUnderline {
+    margin-bottom: 30px;
+  }
+  .descriptionContainer {
+    margin-bottom: 20px;
+  }
+  .qualityOfLifeHeadlineContainer {
+    margin-bottom: 7px;
+  }
+  .descriptions {
+    margin-bottom: 30px;
+  }
 }
 
 @media (min-width: 992px) {
   .mainHeadline {
-    font-size: 26px;
-    margin: 0 0 23px;
+    font-size: 24px;
+    margin: 0 0 36px;
   }
 }
 

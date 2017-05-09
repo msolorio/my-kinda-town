@@ -4,130 +4,135 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600" rel="stylesheet">
   <link rel="stylesheet" href="./css/normalize.css">
   <link rel="stylesheet" href="./css/bootstrap-grid.css">
   <link rel="stylesheet" href="./css/main.css">
   <title>My Kinda Town</title>
 </head>
+
 <body class="body">
-  <div class="message js-message hide"></div>
 
-  <div class="container">
+    <div class="message js-message hide"></div>
 
-    <h1 class="mainHeadline js-mainHeadline">Compare Cities Around The World</h1>
-    <div class="forms row">
-      <form class="form js-form js-form0 col-xs-12">
-        <label class="visuallyhidden" for="input0"></label>
-        <input
-          class="input js-input"
-          type="text"
-          placeholder="Enter a City"
-          data-input=0
-          id="input0"
-          autocomplete="off">
-        <div class="inputUnderline inputUnderline0"></div>
-        <div class="row">
-          <div class="button-addCityCol0 col-xs-12">
-            <button
-              class="button button-addCity js-button-addCity"
-              data-addCity=0>Show Ratings</button>
-          </div>
-          <div class="col-md-6">
-            <button
-              class="button button-remove js-button-remove hide"
-              data-remove=0>Remove</button>
-          </div>
-        </div>
-      </form>
+    <div class="container">
 
-      <form class="form js-form js-form1 col-xs-6 hide">
-        <label class="visuallyhidden" for="input1"></label>
-        <input
-          class="input js-input"
-          type="text"
-          placeholder="Enter a City"
-          data-input=1
-          id="input1"
-          autocomplete="off">
-          <div class="inputUnderline inputUnderline1"></div>
+      <h1 class="mainHeadline js-mainHeadline">Compare Cities Around the World</h1>
+      <div class="forms row">
+        <form class="form js-form js-form0 col-xs-12">
+          <label class="visuallyhidden" for="input0"></label>
+          <input
+            class="input js-input input0"
+            type="text"
+            placeholder="Enter a City"
+            data-input=0
+            id="input0"
+            autocomplete="off">
+          <div class="inputUnderline inputUnderline0"></div>
           <div class="row">
-            <div class="button-addCityCol1 col-xs-12 col-md-6">
+            <div class="button-addCityCol0 col-xs-12">
               <button
                 class="button button-addCity js-button-addCity"
-                data-addCity=1>Show Ratings</button>
+                data-addCity=0>Show Ratings</button>
             </div>
             <div class="col-md-6">
               <button
-                class="button button-remove js-button-remove"
-                data-remove=1>Remove</button>
+                class="button button-remove js-button-remove hide"
+                data-remove=0>Remove</button>
             </div>
           </div>
-      </form>
+        </form>
 
-    </div>
+        <form class="form js-form js-form1 col-xs-6 hide">
+          <label class="visuallyhidden" for="input1"></label>
+          <input
+            class="input js-input"
+            type="text"
+            placeholder="Enter a City"
+            data-input=1
+            id="input1"
+            autocomplete="off">
+            <div class="inputUnderline inputUnderline1"></div>
+            <div class="row">
+              <div class="button-addCityCol1 col-xs-12 col-md-6">
+                <button
+                  class="button button-addCity js-button-addCity"
+                  data-addCity=1>Show Ratings</button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  class="button button-remove js-button-remove"
+                  data-remove=1>Remove</button>
+              </div>
+            </div>
+        </form>
 
-    <div
-      class="descriptionContainer hide"
-      data-description-container=0>
-      <div
-        class="descriptionButton"
-        data-description-button=0>
-        <span data-cityName=0></span>
-        Description
-        <span class="toggleTriangle js-toggleTriangle-description0">
-          &nbsp;&#9656
-        </span>
       </div>
-      <div class="descriptionUnderline descriptionUnderline0"></div>
-      <div
-        class="cityDescription hide"
-        data-description=0>
-      </div>
-    </div>
 
-    <div
-      class="descriptionContainer hide"
-      data-description-container=1>
-      <div
-        class="descriptionButton"
-        data-description-button=1>
-        <span data-cityName=1></span>
-        Description
-        <span class="toggleTriangle js-toggleTriangle-description1">
-          &nbsp;&#9656
-        </span>
-      </div>
-      <div class="descriptionUnderline descriptionUnderline1"></div>
-      <div
-        class="cityDescription hide"
-        data-description=1>
-      </div>
-    </div>
+      <div class="descriptions">
 
-    <div class="qualityOfLifeContainer js-qualityOfLifeContainer hide">
-      <div class="qualityOfLifeHeadlineContainer js-qualityOfLifeHeadlineContainer">
-        <h3 class="qualityOfLifeHeadline js-qualityOfLifeHeadline">City Ratings</h3>
-        <span class="toggleTriangle js-toggleTriangle-qualityOfLifeHeadline">
-          &nbsp;&#9656
-        </span>
-        <div class="qualityOfLifeHeadlineDesc js-qualityOfLifeHeadlineDesc hide">
-          See how your cities perform in a number of categories on a scale from 0 to 10 with higher numbers being more desirable.
+        <div class="descriptionContainer hide"
+          data-description-container=0>
+          <div
+            class="descriptionButton"
+            data-description-button=0>
+            <span data-cityName=0></span>
+            Description
+            <span class="toggleTriangle js-toggleTriangle-description0">
+              &nbsp;&#9656
+            </span>
+          </div>
+          <div class="descriptionUnderline descriptionUnderline0"></div>
+          <div
+            class="cityDescription hide"
+            data-description=0>
+          </div>
+        </div>
+
+        <div class="descriptionContainer hide"
+          data-description-container=1>
+          <div
+            class="descriptionButton"
+            data-description-button=1>
+            <span data-cityName=1></span>
+            Description
+            <span class="toggleTriangle js-toggleTriangle-description1">
+              &nbsp;&#9656
+            </span>
+          </div>
+          <div class="descriptionUnderline descriptionUnderline1"></div>
+          <div
+            class="cityDescription hide"
+            data-description=1>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="qualityOfLifeContainer js-qualityOfLifeContainer hide">
+        <div class="qualityOfLifeHeadlineContainer js-qualityOfLifeHeadlineContainer">
+          <h3 class="qualityOfLifeHeadline js-qualityOfLifeHeadline">City Ratings</h3>
+          <span class="toggleTriangle js-toggleTriangle-qualityOfLifeHeadline">
+            &nbsp;&#9656
+          </span>
+          <div class="qualityOfLifeHeadlineDesc js-qualityOfLifeHeadlineDesc hide">
+            See how your cities perform in a number of categories on a scale from 0 to 10 with higher numbers being more desirable.
+          </div>
+        </div>
+
+        <div class="qualityOfLifeData js-qualityOfLifeData row clearfix">
         </div>
       </div>
 
-      <div class="qualityOfLifeData js-qualityOfLifeData row clearfix">
-      </div>
     </div>
 
-  </div>
-
-  <footer class="footer">
-    <div class="footerText">Uses the Teleport API for city data</div>
-    <a
-      class="footerLink"
-      href="https://teleport.org/"
-      target="_blank">https://teleport.org/</a>
-  </footer>
+    <footer class="footer">
+      <div class="footerText">Uses the Teleport API for city data</div>
+      <a
+        class="footerLink"
+        href="https://teleport.org/"
+        target="_blank">https://teleport.org/</a>
+    </footer>
 
   <script src="js/jquery-3.2.1.js"></script>
   <script src="js/app.js"></script>

@@ -1,6 +1,6 @@
 (function() {
 
-  state = {
+  var state = {
     currentView: 'noCity',
     message: null,
     cities: [
@@ -53,7 +53,8 @@
    * returned from the API
    */
   function getCityFirstName(cityFullName) {
-    return cityFullName.split(', ')[0];
+    var cityFirstName = cityFullName.split(', ')[0];
+    return cityFirstName === 'San Francisco Bay Area' ? 'San Francisco' : cityFirstName;
   };
 
   /**
@@ -114,8 +115,18 @@
       dropdownOpen: true
     },
     'Travel Connectivity': {
-      display: false,
+      display: true,
       position: 10,
+      dropdownOpen: true
+    },
+    'Startups': {
+      display: true,
+      position: 11,
+      dropdownOpen: true
+    },
+    'Venture Capital': {
+      display: false,
+      position: 12,
       dropdownOpen: true
     },
     'Economy': {
@@ -133,16 +144,6 @@
       position: 12,
       dropdownOpen: true
     },
-    'Startups': {
-      display: false,
-      position: 13,
-      dropdownOpen: true
-    },
-    'Venture Capital': {
-      display: false,
-      position: 14,
-      dropdownOpen: true
-    },
     'Tolerance': {
       display: false,
       position: 15,
@@ -150,12 +151,13 @@
     },
   };
 
+  // pulls data from configuration w/data from api to build a processed categories array
   function processCategoriesData(categoriesApiArray, categoriesConfiguration) {
-    console.log('categoriesApiArray:', categoriesApiArray);
     var processedCategoriesArray = [];
+
     categoriesApiArray.forEach(function(categoryFromApi) {
-      // if category from api included in configuration
       var categoryInConfig = categoriesConfiguration[categoryFromApi.name];
+      // if category from api included in configuration
       if (categoryInConfig && categoryInConfig.display) {
         var categoryToKeep = $.extend(true, {}, categoryInConfig);
         // add score to configuration
@@ -166,7 +168,7 @@
         processedCategoriesArray[categoryToKeep.position] = categoryToKeep;
       }
     });
-    console.log('processedCategoriesArray:', processedCategoriesArray);
+
     return processedCategoriesArray;
   }
 
@@ -174,7 +176,6 @@
    * build a city object and input as an item in the cities array
   */
   function addCityDataToState(state, cityFullName, urbanAreaData, formNum) {
-    console.log('formNum', formNum)
     var cityObj = {};
     cityObj.cityName = cityFullName;
     cityObj.urbanAreaFullName = urbanAreaData.full_name;
@@ -225,8 +226,8 @@
     renderMessage(state);
 
     $.ajax(settings)
-      // will succeed even if invalid search term
-      // data will include an empty array of possible cities
+      // will succeed even if no match found
+      // data would then include an empty cities array
       .done(function(data){
         console.log('data:', data);
         updateMessage(state, '');
@@ -281,7 +282,6 @@
   function renderLayout(state) {
     switch(true) {
       case (state.currentView === 'noCity'):
-        // $('.js-mainHeadline').show();
         $('.button-addCityCol0').removeClass('col-md-6');
         $('[data-description-container=0]').hide();
         $('.js-qualityOfLifeContainer').hide();
@@ -289,8 +289,8 @@
         $('.js-form1').hide();
         $('[data-remove=0]').hide();
         break;
+
       case (state.currentView === 'singleCity'):
-        // $('.js-mainHeadline').hide();
         $('.button-addCityCol0').addClass('col-md-6');
         $('.button-addCityCol1').removeClass('col-md-6');
         $('[data-description-container=0]').css('display', 'block');
@@ -301,8 +301,8 @@
         $('[data-remove=0]').css('display', 'block');
         $('[data-remove=1]').hide();
         break;
+
       case (state.currentView === 'twoCities'):
-        // $('.js-mainHeadline').hide();
         $('.button-addCityCol1').addClass('col-md-6');
         $('[data-description-container=0]').css('display', 'block');
         $('[data-description-container=1]').css('display', 'block');
@@ -310,6 +310,7 @@
         $('.js-form1').css('display', 'block');
         $('[data-remove=1]').css('display', 'block');
         break;
+
       default:
         console.log('no view set');
         break;
@@ -345,7 +346,7 @@
   function renderCategories(state) {
     var categoriesArray = state.cities[0] && state.cities[0].categoriesArray;
 
-    // if categoriesArray contains is not undefined, render categories
+    // if categoriesArray exists render categories
     var resultString = categoriesArray &&
       categoriesArray.reduce(function(resultString, category, index) {
         return resultString += (
@@ -365,7 +366,6 @@
       $('[data-input=' + index + ']').val(city.urbanAreaFirstName);
     });
   };
-
 
   function renderDescription(state) {
     state.cities.forEach(function(city, index) {
@@ -429,6 +429,7 @@
   // WINDOW LOAD
   ///////////////////////////////////////////////////
   $(function() {
+    $('.input0').focus();
     listenForAddCityButtonClick();
     listenForRemoveCityButtonClick();
     listenForDescriptionClick();
