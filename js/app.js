@@ -1,4 +1,5 @@
 (function() {
+  'use strict';
 
   var state = {
     currentView: 'noCity',
@@ -7,59 +8,7 @@
     ]
   };
 
-  ///////////////////////////////////////////////////
-  // UPDATE STATE
-  ///////////////////////////////////////////////////
-  function updateMessage(state, message) {
-    state.message = message;
-  };
-
-  function clearInput(formNum) {
-    $('[data-input=' + formNum + ']').val('');
-  };
-
-  /**
-   * removes special characters and leaves accented and all letter characters
-   * */
-  function getCityInputVal(state, formNum) {
-    return $('[data-input=' + formNum + ']')
-      .val()
-      .trim()
-      .replace(/[0-9@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '')
-      .toLowerCase();
-  };
-
-  /**
-   * updates state.currentView based on length of cities array
-   * */
-  function updateViewInState(state) {
-    switch(true) {
-      case (state.cities.length === 0):
-        state.currentView = 'noCity';
-        break;
-      case (state.cities.length === 1):
-        state.currentView = 'singleCity';
-        break;
-      case (state.cities.length === 2):
-        state.currentView = 'twoCities';
-        break;
-      default:
-        console.error('no view to show');
-        break;
-    }
-  };
-
-  /** returns only the name of the city and removes the state or country
-   * returned from the API
-   */
-  function getCityFirstName(cityFullName) {
-    var cityFirstName = cityFullName.split(', ')[0];
-    return cityFirstName === 'San Francisco Bay Area' ? 'San Francisco' : cityFirstName;
-  };
-
-  /**
-   * object keys map to category names from api 
-   * */
+  // object keys map to category names from api 
   var categoriesConfiguration = {
     'Leisure & Culture': {
       display: true,
@@ -151,128 +100,15 @@
     },
   };
 
-  // pulls data from configuration w/data from api to build a processed categories array
-  function processCategoriesData(categoriesApiArray, categoriesConfiguration) {
-    var processedCategoriesArray = [];
-
-    categoriesApiArray.forEach(function(categoryFromApi) {
-      var categoryInConfig = categoriesConfiguration[categoryFromApi.name];
-      // if category from api included in configuration
-      if (categoryInConfig && categoryInConfig.display) {
-        var categoryToKeep = $.extend(true, {}, categoryInConfig);
-        // add score to configuration
-        categoryToKeep.score = Math.round(categoryFromApi.score_out_of_10 * 100)/100;
-        // use name specified in configuration, if none exists use name from api
-        categoryToKeep.name = categoryToKeep.name || categoryFromApi.name;
-        // inserts category at correct position
-        processedCategoriesArray[categoryToKeep.position] = categoryToKeep;
-      }
-    });
-
-    return processedCategoriesArray;
-  }
-
-  /** 
-   * build a city object and input as an item in the cities array
-  */
-  function addCityDataToState(state, cityFullName, urbanAreaData, formNum) {
-    var cityObj = {};
-    cityObj.cityName = cityFullName;
-    cityObj.urbanAreaFullName = urbanAreaData.full_name;
-    cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
-    cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
-    categoriesArray = urbanAreaData._embedded['ua:scores'].categories;
-    cityObj.categoriesArray = processCategoriesData(categoriesArray, categoriesConfiguration);
-    state.cities[formNum] = cityObj;
-  };
-
-  function makeCapitalCase(inputVal) {
-    var wordsArr = inputVal.split(' ');
-    var capsArr = wordsArr.map(function(word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    });
-    return capsArr.join(' ');
-  };
-
-  function updateDataInState(state, data, cityInputVal, formNum) {
-    var cityData = data._embedded['city:search-results'][0] || null;
-    var cityFullName = cityData && cityData.matching_full_name || null;
-    
-    // if no urban area found for city, update message and exit function
-    try {
-      var urbanAreaData = cityData._embedded['city:item']._embedded['city:urban_area'];
-    } catch(error) {
-      updateMessage(state, 'No data found for ' + makeCapitalCase(cityInputVal));
-      clearInput(formNum);
-      return;
-    }
-
-    // if urban area found add city data to state
-    addCityDataToState(state, cityFullName, urbanAreaData, formNum);
-  };
-
-  function getCityData(state, cityInputVal, formNum) {
-    var settings = {
-      type: 'GET',
-      url: 'https://api.teleport.org/api/cities/',
-      dataType: 'json',
-      data: {
-        search: cityInputVal,
-        embed: 'city:search-results/city:item/city:urban_area/ua:scores'
-      }
-    };
-
-    updateMessage(state, 'Retrieving data');
-    renderMessage(state);
-
-    $.ajax(settings)
-      // will succeed even if no match found
-      // data would then include an empty cities array
-      .done(function(data){
-        console.log('data:', data);
-        updateMessage(state, '');
-        updateDataInState(state, data, cityInputVal, formNum);
-        updateViewInState(state);
-        renderState(state, formNum);
-        renderLayout(state);
-      })
-      // server encountered error processing request
-      .fail(function(error) {
-        console.log('error:', error);
-        updateMessage(state, 'There was an issue with the server.');
-      })
-      .always(function() {
-        //
-      });
-  };
-
-  /**
-   * if value inputted make HTTP request to get city data
-   */
-  function updateStateOnAddCity(state, formNum) {
-    var cityInputVal = getCityInputVal(state, formNum);
-    if (cityInputVal) {
-      getCityData(state, cityInputVal, formNum);
-    } else {
-      updateMessage(state, 'Please enter a city.');
-      renderState(state, formNum);
-      renderLayout(state);
-    }
-  };
-
-  function updateStateOnRemoveCity(state, formNum) {
-    state.cities.splice(formNum, 1);
-    updateMessage(state, '');
-    updateViewInState(state);
-  };
-
   ///////////////////////////////////////////////////
   // RENDER STATE
   ///////////////////////////////////////////////////
   function renderMessage(state) {
-    if (state.message) $('.js-message').css('display', 'block');  
-    else $('.js-message').hide();
-    $('.js-message').html(state.message);
+    var $jsMessage = $('.js-message');
+    if (state.message) $jsMessage.css('display', 'block');  
+    else $jsMessage.hide();
+
+    $jsMessage.html(state.message);
   };
 
   /**
@@ -312,29 +148,31 @@
         break;
 
       default:
-        console.log('no view set');
+        console.error('no view set');
         break;
     }
   };
 
+
   /**
    * renders the ratings bars for each category by looping over
    * the cities array and using the score to determine the width of the colored bars
-   * */
+   */
   function renderRatingBars(state, categoryIndex) {
     return state.cities.reduce(function(resultString, city, index) {
       var score = city.categoriesArray[categoryIndex].score;
+
       return resultString += (
-        '<div class="categoryData">\
-          <div class="rating">\
-            <div class="ratingBar-outer">\
-              <div class="ratingBar-inner" data-cityNum="' + index + '"\
-              style="width: ' + score * 10 + '%">\
-              </div>\
-            </div>\
-            <div class="ratingVal">' + Math.round(score) + '/10</div>\
-          </div>\
-        </div>'
+        '<div class="categoryData">' +
+          '<div class="rating">' +
+            '<div class="ratingBar-outer">' +
+              '<div class="ratingBar-inner" data-cityNum="' + index + '"' +
+              'style="width: ' + score * 10 + '%">' +
+              '</div>' +
+            '</div>' +
+            '<div class="ratingVal">' + Math.round(score) + '/10</div>' +
+          '</div>' +
+        '</div>'
       );
     }, '');
   };
@@ -342,7 +180,7 @@
   /**
    * renders the categories section by looping over the
    * categoriesArray
-   * */
+   */
   function renderCategories(state) {
     var categoriesArray = state.cities[0] && state.cities[0].categoriesArray;
 
@@ -350,8 +188,8 @@
     var resultString = categoriesArray &&
       categoriesArray.reduce(function(resultString, category, index) {
         return resultString += (
-          '<div class="category col-xs-12 col-sm-6">\
-            <h4 class="categoryName">' + category.name + '</h4>' +
+          '<div class="category col-xs-12 col-sm-6">' +
+            '<h4 class="categoryName">' + category.name + '</h4>' +
             renderRatingBars(state, index) +
           '</div>'
         );
@@ -372,17 +210,175 @@
       if (city.urbanAreaDescription) {
         $('[data-description=' + index + ']').html(city.urbanAreaDescription);
         $('[data-cityName=' + index + ']').html(city.urbanAreaFirstName);
+      } else {
+        $('[data-description=' + index + ']').html('');
       }
-      else $('[data-description=' + index + ']').html('');
     });
   };
 
   function renderState(state, formNum) {
-    console.log('state', state);
     renderUrbanAreaName(state);
     renderDescription(state);
     renderCategories(state, formNum);
     renderMessage(state);
+  };
+
+  ///////////////////////////////////////////////////
+  // UPDATE STATE
+  ///////////////////////////////////////////////////
+  function updateMessage(state, message) {
+    state.message = message;
+  };
+
+  function clearInput(formNum) {
+    $('[data-input=' + formNum + ']').val('');
+  };
+
+  // removes special characters and leaves accented and all letter characters
+  function getCityInputVal(state, formNum) {
+    return $('[data-input=' + formNum + ']')
+      .val()
+      .trim()
+      .replace(/[0-9@#!$%^&*()_+|~=`{}\[\]:";'<>?.\/\\]/g, '')
+      .toLowerCase();
+  };
+
+  // updates state.currentView based on length of cities array
+  function updateViewInState(state) {
+    switch(true) {
+      case (state.cities.length === 0):
+        state.currentView = 'noCity';
+        break;
+      case (state.cities.length === 1):
+        state.currentView = 'singleCity';
+        break;
+      case (state.cities.length === 2):
+        state.currentView = 'twoCities';
+        break;
+      default:
+        console.error('no view to show');
+        break;
+    }
+  };
+
+  /** returns only the name of the city and removes the state or country
+   * returned from the API
+   */
+  function getCityFirstName(cityFullName) {
+    var cityFirstName = cityFullName.split(', ')[0];
+    return cityFirstName === 'San Francisco Bay Area' ? 'San Francisco' : cityFirstName;
+  };
+
+  // pulls data from configuration w/data from api to build a processed categories array
+  function processCategoriesData(categoriesApiArray, categoriesConfiguration) {
+
+    var processedCategoriesArray = [];
+
+    categoriesApiArray.forEach(function(categoryFromApi) {
+      var categoryInConfig = categoriesConfiguration[categoryFromApi.name];
+      // if category from api included in configuration
+      if (categoryInConfig && categoryInConfig.display) {
+        var categoryToKeep = $.extend(true, {}, categoryInConfig);
+        // add score to configuration
+        categoryToKeep.score = Math.round(categoryFromApi.score_out_of_10 * 100)/100;
+        // use name specified in configuration, if none exists use name from api
+        categoryToKeep.name = categoryToKeep.name || categoryFromApi.name;
+        // inserts category at correct position
+        processedCategoriesArray[categoryToKeep.position] = categoryToKeep;
+      }
+    });
+
+    return processedCategoriesArray;
+  }
+
+  // build a city object and input as an item in the cities array
+  function addCityDataToState(state, cityFullName, urbanAreaData, formNum) {
+    var cityObj = {};
+    cityObj.cityName = cityFullName;
+    cityObj.urbanAreaFullName = urbanAreaData.full_name;
+    cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
+    cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
+    var categoriesArray = urbanAreaData._embedded['ua:scores'].categories;
+    cityObj.categoriesArray = processCategoriesData(categoriesArray, categoriesConfiguration);
+    state.cities[formNum] = cityObj;
+  };
+
+  function makeCapitalCase(inputVal) {
+    var wordsArr = inputVal.split(' ');
+    var capsArr = wordsArr.map(function(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+
+    return capsArr.join(' ');
+  };
+
+  function updateDataInState(state, data, cityInputVal, formNum) {
+    var cityData = data._embedded['city:search-results'][0] || null;
+    var cityFullName = cityData && cityData.matching_full_name || null;
+    
+    // if no urban area found for city, update message and exit function
+    try {
+      var urbanAreaData = cityData._embedded['city:item']._embedded['city:urban_area'];
+    } catch(error) {
+      updateMessage(state, 'No data found for ' + makeCapitalCase(cityInputVal));
+      clearInput(formNum);
+      return;
+    }
+
+    // if urban area found add city data to state
+    addCityDataToState(state, cityFullName, urbanAreaData, formNum);
+  };
+
+  function getCityData(state, cityInputVal, formNum) {
+    var settings = {
+      type: 'GET',
+      url: 'https://api.teleport.org/api/cities/',
+      dataType: 'json',
+      data: {
+        search: cityInputVal,
+        embed: 'city:search-results/city:item/city:urban_area/ua:scores'
+      }
+    };
+
+    updateMessage(state, 'Retrieving data');
+    renderMessage(state);
+
+    $.ajax(settings)
+      /**
+       * will succeed even if no match found
+       * data would then include  an empty cities array
+       */
+      .done(function(data){
+        updateMessage(state, '');
+        updateDataInState(state, data, cityInputVal, formNum);
+        updateViewInState(state);
+        renderState(state, formNum);
+        renderLayout(state);
+      })
+      // server encountered error processing request
+      .fail(function(error) {
+        console.error(error);
+        updateMessage(state, 'There was an issue with the server.');
+      });
+  };
+
+  
+  // if value inputted make HTTP request to get city data
+  function updateStateOnAddCity(state, formNum) {
+    var cityInputVal = getCityInputVal(state, formNum);
+    if (cityInputVal) {
+      getCityData(state, cityInputVal, formNum);
+    } else {
+      updateMessage(state, 'Please enter a city.');
+      renderState(state, formNum);
+      renderLayout(state);
+    }
+  };
+
+  function updateStateOnRemoveCity(state, formNum) {
+    state.cities.splice(formNum, 1);
+    updateMessage(state, '');
+    updateViewInState(state);
   };
 
   ///////////////////////////////////////////////////
