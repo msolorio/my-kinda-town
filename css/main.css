@@ -1,19 +1,10 @@
-html {
-  height: 100%;
-}
-
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
 
-.bgImage {
-  color: #4f5158;
-}
-
 .body {
-  position: relative;
   margin: 0;
   min-width: 320px;
   background: rgb(255, 253, 250) url(../img/map-and-compass.jpg) 77% 0 no-repeat;
@@ -112,7 +103,6 @@ FORMS
   outline: none;
   cursor: pointer;
   border: 1px solid rgb(179, 179, 179);
-  /*background-color: #dadbe0;*/
   background-color: #e0deda;
   border-radius: 20px;
   font-size: 14px;
@@ -150,6 +140,7 @@ DESCRIPTION
   height: 31px;
 }
 
+/* p tag comes to us from the server so must target using child selector */
 .cityDescription p {
   margin: 0;
 }
@@ -274,7 +265,8 @@ FOOTER
   padding: 18px 0 25px;
 }
 
-.footerLink, .footerLink:visited {
+.footerLink,
+.footerLink:visited {
   color: #2699bf;
 }
 
