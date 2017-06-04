@@ -8,6 +8,7 @@
   margin: 0;
   min-width: 320px;
   background: rgb(255, 253, 250) url(../img/map-and-compass.jpg) 77% 0 no-repeat;
+  /*background: #f4f4f5;*/
   background-attachment: fixed;
   background-size: cover;
   width: 100%;
@@ -17,7 +18,7 @@
 .body,
 .input,
 .button {
-  color: #2f3033;
+  color: #373d50;
   font-family: 'Nunito', arial, sans-serif;
 }
 
@@ -58,7 +59,8 @@
 }
 
 .inputUnderline,
-.descriptionUnderline {
+.input,
+.inputUnderline {
   -webkit-box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.22);
   box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.22);
 }
@@ -72,52 +74,70 @@ FORMS
 
 .input {
   display: block;
-  height: 35px;
+  height: 40px;
   font-size: 18px;
   text-align: center;
   outline: none;
   width: 100%;
   border: none;
-  background: none;
+  background: #fff;
   font-weight: 600;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
-.inputUnderline {
+.searchIcon {
+  display: none;
+}
+
+/*.inputUnderline,*/
+.input {
   margin-bottom: 15px;
 }
 
-.inputUnderline0 {
+/*.inputUnderline0,*/
+.input0 {
   border-bottom: 5px solid #05cc05;
 }
 
-.inputUnderline1 {
+/*.inputUnderline1,*/
+.input1 {
   border-bottom: 5px solid #ecec36;
 }
 
 .button {
   display: block;
   position: relative;
-  height: 43px;
-  width: 100%;
-  margin: 0px auto 8px;
-  outline: none;
+  height: 39px;
+  width: 120px;
+  margin: 0 auto 8px;
   cursor: pointer;
-  border: 1px solid rgb(179, 179, 179);
-  background-color: #e0deda;
-  border-radius: 20px;
-  font-size: 14px;
-  color: #4a4d54;
-  -webkit-box-shadow: inset -1px -2px 5px 1px rgba(0, 0, 0, 0.22),
-                      inset 1px 2px 2px 0px #ffffff,
-                      0px 1px 2px 0px rgba(0, 0, 0, 0.16);
-  box-shadow: inset -1px -2px 5px 1px rgba(0, 0, 0, 0.22),
-              inset 1px 2px 2px 0px #ffffff,
-              0px 1px 2px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 1px 2px 3px rgba(0,0,0,.26);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+  outline: none;
 }
 
-.button:active {
-  border: 1px solid #b6b7b9;
-  background-color: #d2d3d6;
+.button-addCity {
+  background: #9094a2;
+}
+
+.button-remove {
+  background: #b5b7c0;
+}
+
+.button-addCity:active {
+  background-color: #9094a2;
+  top: 1px;
+}
+
+.button-remove:active {
+  background: #b5b7c0;
   top: 1px;
 }
 
@@ -267,7 +287,7 @@ FOOTER
 
 .footerLink,
 .footerLink:visited {
-  color: #2699bf;
+  color: #00a9ff;
 }
 
 /***********************************************
@@ -307,6 +327,13 @@ MEDIA QUERIES
   .mainHeadline {
     width: auto;
   }
+
+  .searchIcon {
+    display: block;
+    fill: #bbb;
+    position: absolute;
+    margin: 9px 9px;
+  }
 }
 
 @media (min-width:576px) {
@@ -314,20 +341,16 @@ MEDIA QUERIES
     font-size: 23px;
     letter-spacing: 0.5px;
   }
-  .button {
-    height: 50px;
-    max-width: 242px;
-    margin-bottom: 18px;
-    font-size: 16px;
-    -webkit-box-shadow: inset -1px -3px 8px 0px rgba(0, 0, 0, 0.22),
-                        inset 1px 3px 8px 0px #ffffff,
-                        0px 1px 2px 0px rgba(0, 0, 0, 0.16);
-    box-shadow: inset -1px -3px 8px 0px rgba(0, 0, 0, 0.22),
-                inset 1px 3px 8px 0px #ffffff,
-                0px 1px 2px 0px rgba(0, 0, 0, 0.16);
+
+  .searchIcon {
+    height: 25px;
+    width: 25px;
   }
-  .inputUnderline {
-    margin-bottom: 25px;
+
+  /*.inputUnderline,*/
+  .input {
+    height: 47px;
+    margin-bottom: 20px;
   }
 
   .categoryName {
@@ -369,18 +392,29 @@ MEDIA QUERIES
   .mainHeadline {
     margin: 0 0 15px;
   }
+
   .forms {
     margin-bottom: 15px;
   }
-  .inputUnderline {
-    margin-bottom: 30px;
+
+  /*.inputUnderline,*/
+  .input {
+    margin-bottom: 20px;
   }
+
+  .buttonRow {
+    width: 271px;
+    margin: 0 auto;
+  }
+
   .descriptionContainer {
     margin-bottom: 20px;
   }
+
   .qualityOfLifeHeadlineContainer {
     margin-bottom: 7px;
   }
+
   .descriptions {
     margin-bottom: 30px;
   }
