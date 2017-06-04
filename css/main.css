@@ -69,7 +69,7 @@
 FORMS
 *******************************************************/
 .forms {
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .input {
@@ -79,7 +79,7 @@ FORMS
   text-align: center;
   outline: none;
   width: 100%;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
   font-weight: 600;
   border-top-left-radius: 4px;
@@ -114,7 +114,7 @@ FORMS
   cursor: pointer;
   box-shadow: 1px 2px 3px rgba(0,0,0,.26);
   color: #fff;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 3px;
   text-transform: uppercase;
   font-size: 11px;
@@ -330,7 +330,7 @@ MEDIA QUERIES
 
   .searchIcon {
     display: block;
-    fill: #bbb;
+    fill: #8c8c8c;
     position: absolute;
     margin: 9px 9px;
   }
