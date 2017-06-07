@@ -7,8 +7,7 @@
 .body {
   margin: 0;
   min-width: 320px;
-  background: rgb(255, 253, 250) url(../img/map-and-compass.jpg) 77% 0 no-repeat;
-  /*background: #f4f4f5;*/
+  background: url(../img/map-and-compass.jpg) 77% 0 no-repeat;
   background-attachment: fixed;
   background-size: cover;
   width: 100%;
@@ -72,10 +71,19 @@ FORMS
   margin-bottom: 10px;
 }
 
+.form {
+  padding: 0 10px;
+}
+
+.inputContainer {
+  max-width: 455px;
+  margin: 0 auto 20px;
+}
+
 .input {
   display: block;
   height: 40px;
-  font-size: 18px;
+  font-size: 14px;
   text-align: center;
   outline: none;
   width: 100%;
@@ -87,7 +95,11 @@ FORMS
 }
 
 .searchIcon {
-  display: none;
+  display: block;
+  fill: #7d7d7d;
+  position: absolute;
+  margin: 9px 7px;
+  width: 15px;
 }
 
 /*.inputUnderline,*/
@@ -127,8 +139,16 @@ FORMS
   background: #9094a2;
 }
 
+.button-addCity:hover {
+  background: #7f8494;
+}
+
 .button-remove {
   background: #b5b7c0;
+}
+
+.button-remove:hover {
+  background: #a1a4af;
 }
 
 .button-addCity:active {
@@ -167,6 +187,8 @@ DESCRIPTION
 
 .descriptionUnderline {
   margin-bottom: 10px;
+  -webkit-box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.22);
+  box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.22);
 }
 
 .descriptionUnderline0 {
@@ -328,6 +350,14 @@ MEDIA QUERIES
     width: auto;
   }
 
+  .inputContainer {
+    position: relative;
+  }
+
+  .input {
+    font-size: 18px;
+  }
+
   .searchIcon {
     display: block;
     fill: #8c8c8c;
@@ -347,7 +377,6 @@ MEDIA QUERIES
     width: 25px;
   }
 
-  /*.inputUnderline,*/
   .input {
     height: 47px;
     margin-bottom: 20px;
@@ -397,7 +426,6 @@ MEDIA QUERIES
     margin-bottom: 15px;
   }
 
-  /*.inputUnderline,*/
   .input {
     margin-bottom: 20px;
   }
