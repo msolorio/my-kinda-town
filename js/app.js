@@ -1,14 +1,16 @@
 (function() {
   'use strict';
 
-  window.state = {
+  var state = {
     message: null,
-    cities: [
-    ],
+    cities: [],
     inputError: false
   };
-
-  // object keys map to category names from api 
+  
+/**
+  * object keys map to category names from api
+  * if name property is provided will override original when rendered
+ */
   var categoriesConfiguration = {
     'Leisure & Culture': {
       display: true,
@@ -104,11 +106,10 @@
   // RENDER STATE
   ///////////////////////////////////////////////////
   function renderMessage(state) {
-    var $jsMessage = $('.js-message');
-    if (state.message) $jsMessage.css('display', 'block');  
-    else $jsMessage.hide();
+    if (state.message) $('.js-message').css('display', 'block');  
+    else $('.js-message').hide();
 
-    $jsMessage.html(state.message);
+    $('.js-message').html(state.message);
   };
 
   function renderLayout(state) {
@@ -182,6 +183,9 @@
               '&nbsp;&#9656' +
             '</span>' +
           '</div>' +
+          '<div class="descriptionRemoveCityButton js-removeCityButton" data-removecity=' + index + '>' +
+            '<div class="descriptionRemoveCity">&#10799;</div>' +
+          '</div>' +
           '<div class="descriptionUnderline" data-citynamecolorindex=' + index % 7 + '></div>' +
           '<div ' +
             'class="cityDescription hide" ' +
@@ -221,7 +225,6 @@
     state.message = message;
   };
 
-  // *** KEEP
   // removes special characters and leaves accented and all letter characters
   function getCityInputVal() {
     return $('.js-input')
@@ -231,34 +234,7 @@
       .toLowerCase();
   };
 
-  // updates state.currentView based on length of cities array
-
-  // *** REMOVE
-  function updateViewInState(state) {
-    switch(true) {
-      case (state.cities.length === 0):
-        state.currentView = 'noCity';
-        break;
-      case (state.cities.length === 1):
-        state.currentView = 'singleCity';
-        break;
-      case (state.cities.length === 2):
-        state.currentView = 'twoCities';
-        break;
-      default:
-        console.error('no view to show');
-        break;
-    }
-  };
-
-  /** returns only the name of the city and removes the state or country
-   * returned from the API
-   */
-  // function getCityFirstName(cityFullName) {
-  //   var cityFirstName = cityFullName.split(', ')[0];
-  //   return cityFirstName === 'San Francisco Bay Area' ? 'San Francisco' : cityFirstName;
-  // };
-
+  // handles an exceptionally long full name to work on mobile layouts
   function getCityFullName(cityFullName) {
     if (cityFullName === 'San Francisco Bay Area, California') {
       cityFullName = 'San Francisco, California';
@@ -273,14 +249,13 @@
 
     categoriesApiArray.forEach(function(categoryFromApi) {
       var categoryInConfig = categoriesConfiguration[categoryFromApi.name];
-      // if category from api included in configuration
+
       if (categoryInConfig && categoryInConfig.display) {
         var categoryToKeep = $.extend(true, {}, categoryInConfig);
-        // add score to configuration
         categoryToKeep.score = Math.round(categoryFromApi.score_out_of_10 * 100)/100;
         // use name specified in configuration, if none exists use name from api
         categoryToKeep.name = categoryToKeep.name || categoryFromApi.name;
-        // inserts category at correct position
+        // inserts category at position specified
         processedCategoriesArray[categoryToKeep.position] = categoryToKeep;
       }
     });
@@ -368,20 +343,17 @@
   function updateStateOnAddCity(state) {
     var cityInputVal = getCityInputVal();
 
-    // *** KEEP
     if (cityInputVal) {
       getCityData(state, cityInputVal);
     } else {
       updateMessage(state, 'Please enter a city.');
       renderState(state);
-      // renderLayout(state);
     }
   };
 
-  function updateStateOnRemoveCity(state, formNum) {
-    state.cities.splice(formNum, 1);
+  function updateStateOnRemoveCity(state, removeCityIndex) {
+    state.cities.splice(removeCityIndex, 1);
     updateMessage(state, '');
-    // updateViewInState(state);
   };
 
   ///////////////////////////////////////////////////
@@ -394,18 +366,16 @@
   function listenForAddCityButtonClick() {
     $('.js-button-addCity').click(function(event) {
       event.preventDefault();
-      // var formNum = $(event.currentTarget).attr('data-addCity');
       updateStateOnAddCity(state);
     });
   };
 
   function listenForRemoveCityButtonClick() {
-    $('.js-button-remove').click(function(event) {
-      event.preventDefault();
-      var formNum = $(event.currentTarget).attr('data-remove');
-      updateStateOnRemoveCity(state, formNum);
+    $('.js-descriptions').on('click', '.js-removeCityButton', function(event) {
+      var removeCityIndex = $(event.currentTarget).attr('data-removecity');
+      updateStateOnRemoveCity(state, removeCityIndex);
       renderState(state);
-      // renderLayout(state);
+      renderLayout(state);
     });
   };
 
@@ -429,7 +399,7 @@
   // WINDOW LOAD
   ///////////////////////////////////////////////////
   $(function() {
-    $('.input0').focus();
+    $('.js-input').focus();
     listenForAddCityButtonClick();
     listenForRemoveCityButtonClick();
     listenForDescriptionClick();
