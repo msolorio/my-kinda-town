@@ -50,7 +50,6 @@
 }
 
 .mainHeadline,
-.input,
 .descriptionButton,
 .qualityOfLifeHeadline,
 .toggleTriangle,
@@ -80,12 +79,11 @@ FORMS
 
 .inputContainer {
   max-width: 455px;
-  margin: 0 auto 20px;
+  margin: 0 auto 15px;
 }
 
 .input {
   display: block;
-  margin-bottom: 15px;
   height: 40px;
   font-size: 18px;
   text-align: center;
@@ -188,13 +186,10 @@ DESCRIPTION
   font-size: 25px;
   line-height: 16px;
   color: #fff;
+  cursor: pointer;
   text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.44);
   -webkit-box-shadow: 1px 2px 3px rgba(0,0,0,.26);
           box-shadow: 1px 2px 3px rgba(0,0,0,.26);
-}
-
-.descriptionRemoveCity {
-  /**/
 }
 
 /* p tag comes to us from the server so must target using child selector */
@@ -419,6 +414,7 @@ MEDIA QUERIES
   }
 
   .inputContainer {
+    margin: 0 auto 20px;
     position: relative;
   }
 
@@ -430,24 +426,17 @@ MEDIA QUERIES
     display: block;
     fill: #8c8c8c;
     position: absolute;
-    margin: 9px 9px;
+    margin: 8px 9px 9px;
+    height: 19px;
+    width: 19px;
   }
 }
 
 @media (min-width:576px) {
   .input {
-    font-size: 23px;
+    height: 33px;
+    font-size: 19px;
     letter-spacing: 0.5px;
-  }
-
-  .searchIcon {
-    height: 25px;
-    width: 25px;
-  }
-
-  .input {
-    height: 47px;
-    margin-bottom: 20px;
   }
 
   .categoryName {
@@ -492,10 +481,6 @@ MEDIA QUERIES
 
   .forms {
     margin-bottom: 15px;
-  }
-
-  .input {
-    margin-bottom: 20px;
   }
 
   .buttonRow {
