@@ -297,23 +297,23 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 [data-categoryColorIndex="0"] {
-  background-color: #05cc05;
+  background: #1695a2;
 }
 
 [data-citynamecolorindex="0"] {
-  border-bottom: 5px solid #05cc05;
+  border-bottom: 5px solid #1695a2;
 }
 
 [data-categoryColorIndex="1"] {
-  background-color: #ecec36;
+  background: #FFD700;
 }
 
 [data-citynamecolorindex="1"] {
-  border-bottom: 5px solid #ecec36;
+  border-bottom: 5px solid #FFD700;
 }
 
 [data-categoryColorIndex="2"] {
-  background-color: #ffa500;
+  background: #ffa500;
 }
 
 [data-citynamecolorindex="2"] {
@@ -321,7 +321,7 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 [data-categoryColorIndex="3"] {
-  background-color: #f32727;
+  background: #f32727;
 }
 
 [data-citynamecolorindex="3"] {
@@ -329,7 +329,7 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 [data-categoryColorIndex="4"] {
-  background-color: #ee82ee;
+  background: #ee82ee;
 }
 
 [data-citynamecolorindex="4"] {
@@ -337,7 +337,7 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 [data-categoryColorIndex="5"] {
-  background-color: #4b0082;
+  background: #4b0082;
 }
 
 [data-citynamecolorindex="5"] {
@@ -345,7 +345,7 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 [data-categoryColorIndex="6"] {
-  background-color: #183ae4;
+  background: #183ae4;
 }
 
 [data-citynamecolorindex="6"] {
