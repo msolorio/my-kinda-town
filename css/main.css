@@ -1,7 +1,9 @@
+
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .body {
@@ -34,7 +36,8 @@
   background: #ffecec;
   border-bottom: 1px solid #e0b27d;
   padding: 2px 0 0 11px;
-  box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.15);
+          box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.15);
 }
 
 .mainHeadline {
@@ -68,7 +71,7 @@
 FORMS
 *******************************************************/
 .forms {
-  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .form {
@@ -82,16 +85,20 @@ FORMS
 
 .input {
   display: block;
+  margin-bottom: 15px;
   height: 40px;
-  font-size: 14px;
+  font-size: 18px;
   text-align: center;
   outline: none;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
   font-weight: 600;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  border-radius: 4px;
+}
+
+.input-error {
+  border: 2px solid rgba(255, 78, 78, 0.72);
 }
 
 .searchIcon {
@@ -102,21 +109,6 @@ FORMS
   width: 15px;
 }
 
-/*.inputUnderline,*/
-.input {
-  margin-bottom: 15px;
-}
-
-/*.inputUnderline0,*/
-.input0 {
-  border-bottom: 5px solid #05cc05;
-}
-
-/*.inputUnderline1,*/
-.input1 {
-  border-bottom: 5px solid #ecec36;
-}
-
 .button {
   display: block;
   position: relative;
@@ -124,7 +116,8 @@ FORMS
   width: 120px;
   margin: 0 auto 8px;
   cursor: pointer;
-  box-shadow: 1px 2px 3px rgba(0,0,0,.26);
+  -webkit-box-shadow: 1px 2px 3px rgba(0,0,0,.26);
+          box-shadow: 1px 2px 3px rgba(0,0,0,.26);
   color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 3px;
@@ -136,11 +129,11 @@ FORMS
 }
 
 .button-addCity {
-  background: #9094a2;
+  background: #a3a7b2;
 }
 
 .button-addCity:hover {
-  background: #7f8494;
+  background: #9095a2;
 }
 
 .button-remove {
@@ -166,6 +159,7 @@ FORMS
 DESCRIPTION
 *******************************************************/
 .descriptionContainer {
+  position: relative;
   margin-bottom: 15px;
 }
 
@@ -176,8 +170,31 @@ DESCRIPTION
 }
 
 .descriptionButton {
+  display: inline-block;
+  padding-right: 15px;
   cursor: pointer;
   height: 31px;
+}
+
+.descriptionRemoveCityButton {
+  position: absolute;
+  top: 4px;
+  right: 0px;
+  background: #a3a7b2;
+  border-radius: 17px;
+  height: 22px;
+  width: 22px;
+  text-align: center;
+  font-size: 25px;
+  line-height: 16px;
+  color: #fff;
+  text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.44);
+  -webkit-box-shadow: 1px 2px 3px rgba(0,0,0,.26);
+          box-shadow: 1px 2px 3px rgba(0,0,0,.26);
+}
+
+.descriptionRemoveCity {
+  /**/
 }
 
 /* p tag comes to us from the server so must target using child selector */
@@ -187,31 +204,26 @@ DESCRIPTION
 
 .descriptionUnderline {
   margin-bottom: 10px;
+  border-bottom: 5px solid #afafaf;
   -webkit-box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.22);
   box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.22);
 }
 
-.descriptionUnderline0 {
-  border-bottom: 5px solid #05cc05;
-}
-
-.descriptionUnderline1 {
-  border-bottom: 5px solid #ecec36;
-}
-
 .toggleTriangle {
   display: inline-block;
-  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
   position: relative;
+  -webkit-transition: all .15s ease;
   transition: all .15s ease;
   font-size: 21px;
-  left: -5px;
   top: 1px;
 }
 
 .toggleTriangle-down {
-  transform: rotate(90deg);
-  left: 0px;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  left: 5px;
   top: -1px;
 }
 
@@ -256,11 +268,17 @@ QUALITY OF LIFE DATA DISPLAY
   letter-spacing: 0.05px;
 }
 
+.categoriesCityName {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
 .rating {
   margin-bottom: 5px;
 }
 
 .ratingBar-outer {
+  font-size: 14px;
   display: inline-block;
   width: calc(100% - 45px);
   height: 27px;
@@ -276,19 +294,69 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 .ratingBar-inner {
-  height: 100%;
+  height: 103%;
   position: relative;
-  box-shadow: inset 0px -1px 10px 2px rgba(0, 0, 0, 0.22);
+  -webkit-box-shadow: inset 0px -1px 10px 2px rgba(0, 0, 0, 0.22);
+          box-shadow: inset 0px -1px 10px 2px rgba(0, 0, 0, 0.22);
   border-radius: 15px;
 }
 
-[data-cityNum="0"] {
+[data-categoryColorIndex="0"] {
   background-color: #05cc05;
 }
 
-[data-cityNum="1"] {
+[data-citynamecolorindex="0"] {
+  border-bottom: 5px solid #05cc05;
+}
+
+[data-categoryColorIndex="1"] {
   background-color: #ecec36;
 }
+
+[data-citynamecolorindex="1"] {
+  border-bottom: 5px solid #ecec36;
+}
+
+[data-categoryColorIndex="2"] {
+  background-color: #ffa500;
+}
+
+[data-citynamecolorindex="2"] {
+  border-bottom: 5px solid #ffa500;
+}
+
+[data-categoryColorIndex="3"] {
+  background-color: #f32727;
+}
+
+[data-citynamecolorindex="3"] {
+  border-bottom: 5px solid #f32727;
+}
+
+[data-categoryColorIndex="4"] {
+  background-color: #ee82ee;
+}
+
+[data-citynamecolorindex="4"] {
+  border-bottom: 5px solid #ee82ee;
+}
+
+[data-categoryColorIndex="5"] {
+  background-color: #4b0082;
+}
+
+[data-citynamecolorindex="5"] {
+  border-bottom: 5px solid #4b0082;
+}
+
+[data-categoryColorIndex="6"] {
+  background-color: #183ae4;
+}
+
+[data-citynamecolorindex="6"] {
+  border-bottom: 5px solid #183ae4;
+}
+
 
 .ratingVal {
   display: inline-block;
