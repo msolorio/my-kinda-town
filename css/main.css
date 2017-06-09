@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'NunitoRegular';
+  src: url('../fonts/Nunito-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NunitoSemiBold';
+  src: url('../fonts/Nunito-SemiBold.ttf') format('truetype');
+}
 
 *,
 *:before,
@@ -20,7 +29,7 @@
 .input,
 .button {
   color: #373d50;
-  font-family: 'Nunito', arial, sans-serif;
+  font-family: 'NunitoRegular', arial, sans-serif;
 }
 
 .container {
@@ -41,6 +50,7 @@
 }
 
 .mainHeadline {
+  font-family: 'NunitoRegular', arial, sans-serif;
   font-weight: 300;
   letter-spacing: .5px;
   margin: 0 auto 8px;
@@ -83,6 +93,7 @@ FORMS
 }
 
 .input {
+  font-family: 'NunitoSemiBold', arial, sans-serif;
   display: block;
   height: 40px;
   font-size: 18px;
@@ -245,6 +256,7 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 .qualityOfLifeHeadline {
+  font-family: 'NunitoSemiBold', arial, sans-serif;
   display: inline-block;
   margin: 0 0 6px;
   font-weight: 600;
@@ -256,6 +268,7 @@ QUALITY OF LIFE DATA DISPLAY
 }
 
 .categoryName {
+  font-family: 'NunitoRegular', arial, sans-serif;
   margin: 0 0 5px;
   font-size: 18px;
   font-weight: 400;
