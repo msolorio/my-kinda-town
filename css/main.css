@@ -179,7 +179,8 @@ DESCRIPTION
 }
 
 .descriptionButton {
-  display: inline-block;
+  width: 100%;
+  width: calc(100% - 28px);
   padding-right: 15px;
   cursor: pointer;
   height: 31px;

@@ -14,91 +14,74 @@
   var categoriesConfiguration = {
     'Leisure & Culture': {
       display: true,
-      position: 0,
-      dropdownOpen: true
+      position: 0
     },
     'Education': {
       display: true,
-      position: 1,
-      dropdownOpen: true
+      position: 1
     },
     'Housing': {
       name: 'Affordable Housing',
       display: true,
-      position: 2,
-      dropdownOpen: true
+      position: 2
     },
     'Healthcare': {
       display: true,
-      position: 3,
-      dropdownOpen: true
+      position: 3
     },
     'Cost of Living': {
       name: 'Low Cost of Living',
       display: true,
-      position: 4,
-      dropdownOpen: true
+      position: 4
     },
     'Outdoors': {
       display: true,
-      position: 5,
-      dropdownOpen: true
+      position: 5
     },
     'Environmental Quality': {
       display: true,
-      position: 6,
-      dropdownOpen: true
+      position: 6
     },
     'Internet Access': {
       display: true,
-      position: 7,
-      dropdownOpen: true
+      position: 7
     },
     'Safety': {
       display: true,
-      position: 8,
-      dropdownOpen: true
+      position: 8
     },
     'Commute': {
       name: 'Short Commute Time',
       display: true,
-      position: 9,
-      dropdownOpen: true
+      position: 9
     },
     'Travel Connectivity': {
       display: true,
-      position: 10,
-      dropdownOpen: true
+      position: 10
     },
     'Startups': {
       display: true,
-      position: 11,
-      dropdownOpen: true
+      position: 11
     },
     'Economy': {
       display: true,
-      position: 12,
-      dropdownOpen: true
+      position: 12
     },
     'Tolerance': {
       display: true,
-      position: 13,
-      dropdownOpen: true
+      position: 13
     },
     'Venture Capital': {
       display: false,
-      position: 14,
-      dropdownOpen: true
+      position: 14
     },
     'Taxation': {
       display: false,
-      position: 15,
-      dropdownOpen: true
+      position: 15
     },
     'Business Freedom': {
       display: false,
-      position: 16,
-      dropdownOpen: true
+      position: 16
     }
   };
 
@@ -161,13 +144,6 @@
       }, '');
 
     $('.js-qualityOfLifeData').html(resultString);
-  };
-
-  function renderUrbanAreaName(state) {
-    $('.js-input').val('');
-    state.cities.forEach(function(city, index) {
-      $('[data-input=' + index + ']').val(city.urbanAreaFirstName);
-    });
   };
 
   function renderDescription(state) {
@@ -235,11 +211,15 @@
   };
 
   // handles an exceptionally long full name to work on mobile layouts
-  function getCityFullName(cityFullName) {
-    if (cityFullName === 'San Francisco Bay Area, California') {
-      cityFullName = 'San Francisco, California';
+  function handleFullNameExceptions(cityFullName) {
+    switch(cityFullName) {
+      case 'San Francisco Bay Area, California':
+        return 'San Francisco, California';
+      case 'Washington, District of Columbia':
+        return 'Washington, DC';
+      default:
+        return cityFullName;
     }
-    return cityFullName;
   };
 
   // pulls data from configuration w/data from api to build a processed categories array
@@ -267,7 +247,7 @@
   function addCityDataToState(state, cityFullName, urbanAreaData) {
     var cityObj = {};
     cityObj.cityName = cityFullName;
-    cityObj.urbanAreaFullName = getCityFullName(urbanAreaData.full_name);
+    cityObj.urbanAreaFullName = handleFullNameExceptions(urbanAreaData.full_name);
     // cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
     cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
     var categoriesArray = urbanAreaData._embedded['ua:scores'].categories;
@@ -301,7 +281,6 @@
     addCityDataToState(state, cityFullName, urbanAreaData);
     state.inputError = false;
     clearInput();
-    console.log('state:', state);
   };
 
   function getCityData(state, cityInputVal) {
@@ -324,7 +303,6 @@
        * data would then include  an empty cities array
        */
       .done(function(data) {
-        console.log('data:', data);
 
         updateMessage(state, '');
         updateDataInState(state, data, cityInputVal);
@@ -359,10 +337,6 @@
   ///////////////////////////////////////////////////
   // EVENT LISTENERS
   ///////////////////////////////////////////////////
-  /**
-   * all buttons exist on page load
-   * don't need to worry about event delegation
-   */
   function listenForAddCityButtonClick() {
     $('.js-button-addCity').click(function(event) {
       event.preventDefault();
