@@ -1,12 +1,33 @@
 (function() {
   'use strict';
 
+  ///////////////////////////////////////////////////
+  // JQUERY EASY AUTOCOMPLETE
+  ///////////////////////////////////////////////////
+  var options = {
+    url: "js/urban-areas.json",
+    getValue: "name",
+    list: {
+      match: {
+        enabled: true
+      }
+    }
+  };
+  
+  $('.js-input').easyAutocomplete(options);
+
+  ///////////////////////////////////////////////////
+  // STATE
+  ///////////////////////////////////////////////////
   var state = {
     message: null,
     cities: [],
     inputError: false
   };
   
+  ///////////////////////////////////////////////////
+  // CONFIGURATIONS
+  ///////////////////////////////////////////////////
 /**
   * object keys map to category names from api
   * if name property is provided will override original when rendered
