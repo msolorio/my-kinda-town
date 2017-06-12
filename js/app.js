@@ -159,10 +159,8 @@
               '&nbsp;&#9656' +
             '</span>' +
           '</div>' +
-          '<div class="descriptionRemoveCityButton js-removeCityButton" data-removecity=' + index + '>' +
-            '<div class="descriptionRemoveCity">&#10799;</div>' +
-          '</div>' +
-          '<div class="descriptionUnderline" data-citynamecolorindex=' + index % 7 + '></div>' +
+            '<img class="removeCityButton js-removeCityButton" data-removecity=' + index + ' src="./img/cancel-button.svg" alt="delete city" title="delete city">' +
+          '<div class="descriptionUnderline clearfix" data-citynamecolorindex=' + index % 7 + '></div>' +
           '<div ' +
             'class="cityDescription hide" ' +
             'data-description=' + index + '>' +
