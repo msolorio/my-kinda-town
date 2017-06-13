@@ -267,7 +267,6 @@
     var cityObj = {};
     cityObj.cityName = cityFullName;
     cityObj.urbanAreaFullName = handleFullNameExceptions(urbanAreaData.full_name);
-    // cityObj.urbanAreaFirstName = getCityFirstName(urbanAreaData.full_name);
     cityObj.urbanAreaDescription = urbanAreaData._embedded['ua:scores'].summary;
     var categoriesArray = urbanAreaData._embedded['ua:scores'].categories;
     cityObj.categoriesArray = processCategoriesData(categoriesArray, categoriesConfiguration);
