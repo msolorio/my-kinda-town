@@ -23,9 +23,6 @@ html, body {
 .body {
   margin: 0;
   min-width: 320px;
-  /*background: url(../img/map-and-compass.jpg) 77% 0 no-repeat;
-  background-attachment: fixed;
-  background-size: cover;*/
   background: #f7f7f7;
   width: 100%;
   height: 100%;
