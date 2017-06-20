@@ -299,7 +299,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-radius: 15px;
 }
 
-[data-categoryColorIndex="0"] {
+[data-categorycolorindex="0"] {
   background: #1695a2;
 }
 
@@ -307,7 +307,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-bottom: 5px solid #1695a2;
 }
 
-[data-categoryColorIndex="1"] {
+[data-categorycolorindex="1"] {
   background: #FFD700;
 }
 
@@ -315,7 +315,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-bottom: 5px solid #FFD700;
 }
 
-[data-categoryColorIndex="2"] {
+[data-categorycolorindex="2"] {
   background: #ffa500;
 }
 
@@ -323,7 +323,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-bottom: 5px solid #ffa500;
 }
 
-[data-categoryColorIndex="3"] {
+[data-categorycolorindex="3"] {
   background: #f32727;
 }
 
@@ -331,7 +331,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-bottom: 5px solid #f32727;
 }
 
-[data-categoryColorIndex="4"] {
+[data-categorycolorindex="4"] {
   background: #ee82ee;
 }
 
@@ -339,7 +339,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-bottom: 5px solid #ee82ee;
 }
 
-[data-categoryColorIndex="5"] {
+[data-categorycolorindex="5"] {
   background: #4b0082;
 }
 
@@ -347,7 +347,7 @@ QUALITY OF LIFE DATA DISPLAY
   border-bottom: 5px solid #4b0082;
 }
 
-[data-categoryColorIndex="6"] {
+[data-categorycolorindex="6"] {
   background: #183ae4;
 }
 
