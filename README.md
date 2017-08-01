@@ -1,9 +1,8 @@
 # My Kinda Town
 
-This responsive web app was created to help prospective transplants make their next move by providing information about major cities around the world. Enter a city to get key metrics for that city. Enter more cities and compare your favorite picks side by side.
+A responsive web app that help prospective transplants make their next move by providing information about major cities around the world. Enter a city to get key metrics for that city. Enter more cities and compare your favorite picks side by side.
 
 ![alt text](./img/screenshot.png "desktop view")
-
 
 ## How To Get Started
 
